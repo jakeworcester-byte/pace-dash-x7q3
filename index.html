@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Health Dashboard</title>
+<style>
+  :root {
+    color-scheme: light;
+    --surface-1: #fcfcfb;
+    --page: #f9f9f7;
+    --ink-1: #0b0b0b;
+    --ink-2: #52514e;
+    --muted: #898781;
+    --grid: #e1e0d9;
+    --baseline: #c3c2b7;
+    --border: rgba(11,11,11,0.10);
+    --blue: #2a78d6;
+    --blue-soft: #9ec5f4;
+    --blue-deep: #1c5cab;
+    --red: #e34948;
+    --good-text: #006300;
+    --status-good: #0ca30c;
+    --status-serious: #ec835a;
+    --status-critical: #d03b3b;
+    --tile: #ffffff;
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --page: #0d0d0d;
+    --ink-1: #ffffff;
+    --ink-2: #c3c2b7;
+    --muted: #898781;
+    --grid: #2c2c2a;
+    --baseline: #383835;
+    --border: rgba(255,255,255,0.10);
+    --blue: #3987e5;
+    --blue-soft: #256abf;
+    --blue-deep: #6da7ec;
+    --red: #e66767;
+    --good-text: #0ca30c;
+    --tile: #1f1f1e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --surface-1: #1a1a19;
+      --page: #0d0d0d;
+      --ink-1: #ffffff;
+      --ink-2: #c3c2b7;
+      --muted: #898781;
+      --grid: #2c2c2a;
+      --baseline: #383835;
+      --border: rgba(255,255,255,0.10);
+      --blue: #3987e5;
+      --blue-soft: #256abf;
+      --blue-deep: #6da7ec;
+      --red: #e66767;
+      --good-text: #0ca30c;
+      --tile: #1f1f1e;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page);
+    color: var(--ink-1);
+    line-height: 1.45;
+    padding: 20px 14px 60px;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 6px; flex-wrap: wrap; }
+  h1 { font-size: 1.45rem; letter-spacing: -0.01em; }
+  .sub { color: var(--ink-2); font-size: 0.85rem; margin-bottom: 16px; }
+  .theme-btn {
+    background: var(--tile); color: var(--ink-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 12px; font-size: 0.8rem; cursor: pointer;
+  }
+  .banner {
+    background: var(--tile); border: 1px solid var(--border); border-left: 4px solid var(--blue);
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 18px; font-size: 0.88rem; color: var(--ink-2);
+  }
+  .banner strong { color: var(--ink-1); }
+
+  .tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 14px; }
+  .tile {
+    background: var(--tile); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px;
+  }
+  .tile .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 2px; }
+  .tile .value { font-size: 1.5rem; font-weight: 650; letter-spacing: -0.01em; }
+  .tile .value .unit { font-size: 0.85rem; font-weight: 500; color: var(--ink-2); }
+  .tile .delta { font-size: 0.75rem; color: var(--ink-2); margin-top: 1px; }
+  .tile .delta.good { color: var(--good-text); }
+  .tile .delta.bad { color: var(--red); }
+
+  .progress-card { background: var(--tile); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; }
+  .progress-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--ink-2); margin-bottom: 6px; }
+  .progress-track { height: 12px; background: var(--grid); border-radius: 6px; overflow: hidden; position: relative; }
+  .progress-fill { height: 100%; background: var(--blue); border-radius: 6px; }
+  .progress-marker { position: absolute; top: -3px; bottom: -3px; width: 2px; background: var(--ink-2); }
+  .progress-note { font-size: 0.75rem; color: var(--muted); margin-top: 6px; }
+
+  .controls { display: flex; gap: 6px; margin-bottom: 14px; flex-wrap: wrap; align-items: center; }
+  .controls .lbl { font-size: 0.78rem; color: var(--muted); margin-right: 4px; }
+  .rbtn {
+    background: var(--tile); border: 1px solid var(--border); color: var(--ink-2);
+    border-radius: 8px; padding: 5px 12px; font-size: 0.8rem; cursor: pointer;
+  }
+  .rbtn.active { background: var(--blue); border-color: var(--blue); color: #fff; font-weight: 600; }
+
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  .grid2 > * { min-width: 0; }
+  @media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--tile); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px 8px;
+  }
+  .card.full { grid-column: 1 / -1; }
+  .card h2 { font-size: 0.95rem; margin-bottom: 2px; }
+  .card .desc { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; }
+  .chart-box { position: relative; width: 100%; }
+  .chart-box svg { display: block; width: 100%; height: auto; }
+  .tooltip {
+    position: absolute; pointer-events: none; background: var(--ink-1); color: var(--page);
+    font-size: 0.72rem; padding: 5px 8px; border-radius: 6px; white-space: nowrap;
+    transform: translate(-50%, -110%); opacity: 0; transition: opacity 0.08s; z-index: 5; line-height: 1.35;
+  }
+  .train-strip { display: flex; gap: 4px; flex-wrap: wrap; padding-bottom: 10px; }
+  .train-cell { flex: 1; min-width: 44px; border-radius: 8px; padding: 6px 4px; text-align: center; font-size: 0.65rem; border: 1px solid var(--border); }
+  .train-cell .wk { color: var(--muted); display: block; }
+  .train-cell .st { font-weight: 700; font-size: 0.78rem; display: block; margin-top: 1px; }
+  .focus-list { list-style: none; padding-bottom: 10px; }
+  .focus-list li { font-size: 0.85rem; color: var(--ink-2); padding: 7px 0 7px 22px; position: relative; border-bottom: 1px solid var(--grid); }
+  .focus-list li:last-child { border-bottom: none; }
+  .focus-list li::before { content: "→"; position: absolute; left: 2px; color: var(--blue); font-weight: 700; }
+  .focus-list li strong { color: var(--ink-1); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.78rem; }
+  th { text-align: right; color: var(--muted); font-weight: 600; padding: 6px 8px; border-bottom: 1px solid var(--baseline); white-space: nowrap; }
+  th:first-child, td:first-child { text-align: left; }
+  td { text-align: right; padding: 6px 8px; border-bottom: 1px solid var(--grid); color: var(--ink-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td:first-child { color: var(--ink-1); font-weight: 600; }
+  .tbl-scroll { overflow-x: auto; padding-bottom: 10px; }
+  .neg { color: var(--good-text); font-weight: 600; }
+  .pos { color: var(--red); font-weight: 600; }
+  .flag { color: var(--muted); font-size: 0.68rem; }
+  footer { margin-top: 26px; font-size: 0.72rem; color: var(--muted); text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Health Dashboard</h1>
+      <div class="sub" id="subline"></div>
+    </div>
+    <button class="theme-btn" id="themeBtn">◐ Theme</button>
+  </header>
+
+  <div class="banner" id="statusBanner"></div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="progress-card">
+    <div class="progress-row"><span id="progStart"></span><span id="progPct" style="font-weight:700;color:var(--ink-1)"></span><span id="progGoal"></span></div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progFill"></div>
+      <div class="progress-marker" id="progMark" title="Original goal: 236 lbs (crossed July 16)"></div>
+    </div>
+    <div class="progress-note" id="progNote"></div>
+  </div>
+
+  <div class="controls">
+    <span class="lbl">Range:</span>
+    <button class="rbtn" data-range="30">30 days</button>
+    <button class="rbtn" data-range="60">60 days</button>
+    <button class="rbtn" data-range="90">90 days</button>
+    <button class="rbtn active" data-range="all">All</button>
+  </div>
+
+  <div class="grid2">
+    <div class="card full">
+      <h2>Weight trajectory</h2>
+      <div class="desc">Daily weigh-ins (lbs) · dashed lines mark the crossed 236 goal and the 215 target · hover for details</div>
+      <div class="chart-box" id="weightChart"></div>
+    </div>
+    <div class="card">
+      <h2>Weekly weight change</h2>
+      <div class="desc">Week-over-week change from clean closes (lbs) · blue = loss, red = gain</div>
+      <div class="chart-box" id="deltaChart"></div>
+    </div>
+    <div class="card">
+      <h2>Protein</h2>
+      <div class="desc">Weekly average (g/day) vs the 100g target line · tooltip shows days on target</div>
+      <div class="chart-box" id="proteinChart"></div>
+    </div>
+    <div class="card">
+      <h2>Calories</h2>
+      <div class="desc">Weekly average intake (kcal/day) · dashed line = 1,400 floor</div>
+      <div class="chart-box" id="calChart"></div>
+    </div>
+    <div class="card">
+      <h2>Calibrated daily deficit</h2>
+      <div class="desc">Modeled avg deficit (kcal/day, TDEE 2,670 baseline) · tracked since Week 17</div>
+      <div class="chart-box" id="deficitChart"></div>
+    </div>
+    <div class="card">
+      <h2>Steps</h2>
+      <div class="desc">Weekly average steps/day</div>
+      <div class="chart-box" id="stepsChart"></div>
+    </div>
+    <div class="card">
+      <h2>Sleep</h2>
+      <div class="desc">Weekly average time asleep · dashed line = 7h reference</div>
+      <div class="chart-box" id="sleepChart"></div>
+    </div>
+    <div class="card full">
+      <h2>Resistance training by week</h2>
+      <div class="desc">Two-day split (Day A / Day B) since April 21 · ✓ complete · ◐ partial (one session) · ✕ missed</div>
+      <div class="train-strip" id="trainStrip"></div>
+    </div>
+    <div class="card full">
+      <h2>This week's focus</h2>
+      <div class="desc" id="focusDesc"></div>
+      <ul class="focus-list" id="focusList"></ul>
+    </div>
+    <div class="card full">
+      <h2>Weekly log</h2>
+      <div class="desc">All tracked weeks, most recent first</div>
+      <div class="tbl-scroll"><table id="weekTable"></table></div>
+    </div>
+  </div>
+
+  <footer id="foot"></footer>
+</div>
+
+<script>
+/* ================================================================
+   WEEKLY DATA — edit this block after each Sunday check-in.
+   1. Add a new object to WEEKS (numbers from the weekly summary).
+   2. Add new daily weigh-ins to DAILY_WEIGHTS: [date, lbs, "am"|"pm"].
+   3. Update META (current status + focus items).
+   Then re-push index.html to GitHub (push script or upload).
+   ================================================================ */
+
+const META = {
+  updated: "2026-07-19",
+  startWeight: 286.3,
+  startDate: "2026-03-03",
+  originalGoal: 236,
+  goal: 215,
+  dose: "7.5mg",
+  doseNote: "First 7.5mg injection July 19 — watch appetite, GI tolerance, and injection-day protein through the adjustment window.",
+  injectionDay: "Sunday",
+  troughWindow: "July 24–26",
+  statusLine: "<strong>Original 236 goal crossed July 16.</strong> New target: 215 lbs. Dose stepped up to <strong>7.5mg on July 19</strong> — first trough at the higher dose lands <strong>July 24–26</strong>: front-load protein those mornings.",
+  focusDesc: "Carried forward from the Week 20 summary (July 12–18)",
+  focus: [
+    "<strong>Protect injection-day protein.</strong> July 12 slid to 71g; 7.5mg will pull appetite down harder. Front-load protein next Sunday.",
+    "<strong>Add the Day A load — overdue.</strong> Two sessions stalled at top-of-range: Goblet 50 / Bench 80 / RDL 90 / Row 80 / Plank 2×45s.",
+    "<strong>Don't extrapolate the −4.6 week.</strong> Fluid-amplified; expect regression toward ~0.6–1 lb/wk as fluid settles. A smaller number next week is not a stall.",
+    "<strong>Body composition scan (DEXA/InBody).</strong> Most time-sensitive open item — past original goal weight with no baseline. Schedule independently of the Sept 28 appointment.",
+    "<strong>Trough window July 24–26</strong> — first trough on 7.5mg; front-load protein those mornings.",
+  ],
+};
+
+// One row per tracked week. wt = closing weight (lbs); chg = week-over-week (lbs);
+// prot = avg g/day; hits = days protein target hit; logged = days logged;
+// cal = avg kcal/day; steps = avg/day; sleep = avg minutes asleep; deficit = avg kcal/day (calibrated, null before W17);
+// train: "pre" | "complete" | "partial" | "missed"; note = short caveat shown in table/tooltips.
+const WEEKS = [
+  { n: 6,  label: "Apr 6–12",       end: "2026-04-12", wt: 255.2, chg: -5.0, prot: 87,  hits: 3, logged: 5, cal: 1535, steps: 5375,  sleep: null, deficit: null, train: "pre",      note: "cal/protein are estimates; 2 days unlogged" },
+  { n: 7,  label: "Apr 13–19",      end: "2026-04-19", wt: 252.4, chg: -2.8, prot: 97,  hits: 3, logged: 6, cal: 1713, steps: 8114,  sleep: 429,  deficit: null, train: "pre",      note: "" },
+  { n: 8,  label: "Apr 19–25",      end: "2026-04-25", wt: 252.3, chg: -0.1, prot: 115, hits: 4, logged: 7, cal: 1612, steps: 5560,  sleep: 443,  deficit: null, train: "complete", note: "lifting program launched — water retention flattened the scale" },
+  { n: 9,  label: "Apr 26–May 2",   end: "2026-05-02", wt: 249.1, chg: -3.2, prot: 116, hits: 6, logged: 7, cal: 1582, steps: 7980,  sleep: 474,  deficit: null, train: "complete", note: "" },
+  { n: 10, label: "May 3–9",        end: "2026-05-09", wt: 248.2, chg: -0.9, prot: 110, hits: 3, logged: 7, cal: 1673, steps: 6506,  sleep: 450,  deficit: null, train: "complete", note: "travel week (KC–DC)" },
+  { n: 11, label: "May 10–16",      end: "2026-05-16", wt: 246.0, chg: -2.2, prot: 121, hits: 5, logged: 7, cal: 1890, steps: 6856,  sleep: 424,  deficit: null, train: "complete", note: "" },
+  { n: 12, label: "May 17–23",      end: "2026-05-23", wt: 248.6, chg: 2.6,  prot: 100, hits: 4, logged: 7, cal: 1450, steps: 7060,  sleep: 428,  deficit: null, train: "complete", note: "HCTZ removed — fluid rebound, not fat gain; PM close" },
+  { n: 13, label: "May 24–30",      end: "2026-05-30", wt: 246.9, chg: -1.7, prot: 110, hits: 4, logged: 7, cal: 1689, steps: 7657,  sleep: 435,  deficit: null, train: "complete", note: "fluid rebound resolving" },
+  { n: 14, label: "May 31–Jun 6",   end: "2026-06-06", wt: 245.0, chg: -1.9, prot: 129, hits: 7, logged: 7, cal: 1845, steps: 6271,  sleep: 439,  deficit: null, train: "complete", note: "first 7/7 protein week" },
+  { n: 15, label: "Jun 7–13",       end: "2026-06-13", wt: 242.0, chg: -3.0, prot: 108, hits: 4, logged: 7, cal: 1606, steps: 7086,  sleep: 365,  deficit: null, train: "partial",  note: "travel-compressed sleep; Day B skipped" },
+  { n: 16, label: "Jun 14–20",      end: "2026-06-20", wt: 239.2, chg: -2.8, prot: 104, hits: 4, logged: 7, cal: 1722, steps: 8109,  sleep: 440,  deficit: null, train: "complete", note: "PM close" },
+  { n: 17, label: "Jun 21–27",      end: "2026-06-27", wt: 239.9, chg: 0.7,  prot: 103, hits: 3, logged: 7, cal: 2049, steps: 10239, sleep: 405,  deficit: -621, train: "missed",   note: "single mid-week travel reading — not a reliable close" },
+  { n: 18, label: "Jun 28–Jul 4",   end: "2026-07-04", wt: 236.5, chg: -2.7, prot: 98,  hits: 3, logged: 7, cal: 1930, steps: 6909,  sleep: 432,  deficit: -740, train: "partial",  note: "clean fasted close; model matched scale (~1.45 lb/wk)" },
+  { n: 19, label: "Jul 5–11",       end: "2026-07-11", wt: 236.7, chg: 0.2,  prot: 117, hits: 6, logged: 7, cal: 1972, steps: 8553,  sleep: 439,  deficit: -698, train: "missed",   note: "flat scale over real deficit — HCTZ fluid masking" },
+  { n: 20, label: "Jul 12–18",      end: "2026-07-18", wt: 232.1, chg: -4.6, prot: 107, hits: 6, logged: 7, cal: 2033, steps: 8380,  sleep: 436,  deficit: -637, train: "complete", note: "goal crossed; drop fluid-amplified (~1.3 lb real fat)" },
+];
+
+// [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
+const DAILY_WEIGHTS = [
+  ["2026-03-03",286.3,"am"],["2026-03-07",275.1,"am"],["2026-03-08",273.8,"am"],
+  ["2026-03-12",268.0,"am"],["2026-03-13",268.0,"am"],["2026-03-16",266.7,"am"],
+  ["2026-03-18",265.4,"am"],["2026-03-20",264.5,"am"],["2026-03-21",263.6,"pm"],
+  ["2026-03-24",263.0,"am"],["2026-03-27",263.0,"am"],["2026-03-29",262.2,"am"],
+  ["2026-03-30",261.6,"am"],["2026-03-31",259.6,"am"],["2026-04-01",259.0,"am"],
+  ["2026-04-02",257.4,"am"],["2026-04-04",257.4,"am"],["2026-04-06",260.2,"am"],
+  ["2026-04-07",258.8,"am"],["2026-04-08",256.8,"am"],["2026-04-10",255.7,"am"],
+  ["2026-04-11",255.4,"am"],["2026-04-12",255.4,"am"],["2026-04-16",254.4,"am"],
+  ["2026-04-17",252.6,"am"],["2026-04-18",252.4,"am"],["2026-04-21",253.8,"pm"],
+  ["2026-04-22",253.8,"am"],["2026-04-24",252.4,"am"],["2026-04-25",250.8,"am"],
+  ["2026-04-26",253.0,"am"],["2026-04-28",250.4,"am"],["2026-04-29",250.0,"am"],
+  ["2026-05-01",249.1,"am"],["2026-05-03",249.0,"am"],["2026-05-06",249.0,"am"],
+  ["2026-05-07",249.0,"pm"],["2026-05-08",248.8,"am"],["2026-05-09",248.2,"am"],
+  ["2026-05-15",246.0,"am"],["2026-05-16",246.0,"am"],["2026-05-20",250.6,"am"],
+  ["2026-05-22",249.5,"am"],["2026-05-23",248.6,"pm"],["2026-05-25",248.6,"am"],
+  ["2026-05-26",248.0,"am"],["2026-05-28",247.1,"am"],["2026-05-29",246.9,"am"],
+  ["2026-05-31",246.4,"am"],["2026-06-02",245.9,"am"],["2026-06-03",245.2,"pm"],
+  ["2026-06-04",245.0,"am"],["2026-06-08",244.7,"am"],["2026-06-09",243.8,"am"],
+  ["2026-06-10",242.0,"am"],["2026-06-15",241.9,"pm"],["2026-06-18",241.7,"pm"],
+  ["2026-06-19",239.9,"am"],["2026-06-25",239.9,"pm"],["2026-07-01",238.0,"am"],
+  ["2026-07-02",236.5,"am"],["2026-07-07",236.9,"pm"],["2026-07-09",236.7,"am"],
+  ["2026-07-11",236.3,"pm"],["2026-07-13",235.0,"pm"],["2026-07-14",233.6,"pm"],
+  ["2026-07-16",232.8,"am"],["2026-07-17",232.1,"am"],
+];
+
+const MILESTONES = [
+  { date: "2026-03-03", label: "Start · 286.3" },
+  { date: "2026-03-29", label: "Dose → 5mg" },
+  { date: "2026-04-21", label: "Lifting starts" },
+  { date: "2026-05-17", label: "HCTZ removed" },
+  { date: "2026-07-16", label: "236 goal crossed" },
+];
+
+/* ================= END OF DATA BLOCK ================= */
+
+const $ = (id) => document.getElementById(id);
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const fmt = (n, d=0) => n.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const parseD = (s) => new Date(s + "T12:00:00");
+const fmtDate = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+const sleepFmt = (m) => m == null ? "—" : `${Math.floor(m/60)}h ${String(Math.round(m%60)).padStart(2,"0")}m`;
+
+// ---------- theme ----------
+$("themeBtn").addEventListener("click", () => {
+  const r = document.documentElement;
+  const dark = r.getAttribute("data-theme") === "dark" ||
+    (!r.getAttribute("data-theme") && matchMedia("(prefers-color-scheme: dark)").matches);
+  r.setAttribute("data-theme", dark ? "light" : "dark");
+  render();
+});
+
+// ---------- header / tiles ----------
+function renderStatic() {
+  const last = WEEKS[WEEKS.length - 1];
+  const prev = WEEKS[WEEKS.length - 2];
+  const latestW = DAILY_WEIGHTS[DAILY_WEIGHTS.length - 1];
+  const lost = META.startWeight - last.wt;
+  const toGoal = last.wt - META.goal;
+
+  $("subline").textContent = `Zepbound journey · started ${fmtDate(parseD(META.startDate))}, 2026 · ${META.dose} · updated ${fmtDate(parseD(META.updated))} (Week ${last.n} summary)`;
+  $("statusBanner").innerHTML = META.statusLine;
+
+  const tiles = [
+    { label: "Current weight", value: `${fmt(last.wt,1)}<span class="unit"> lbs</span>`,
+      delta: `${last.chg > 0 ? "+" : ""}${fmt(last.chg,1)} this week`, cls: last.chg <= 0 ? "good" : "bad" },
+    { label: "Total lost", value: `${fmt(lost,1)}<span class="unit"> lbs</span>`, delta: `from ${fmt(META.startWeight,1)} start`, cls: "" },
+    { label: `To ${META.goal} goal`, value: `${fmt(toGoal,1)}<span class="unit"> lbs</span>`, delta: `≈ ${Math.round(toGoal/0.8)} wks at 0.8 lb/wk`, cls: "" },
+    { label: "Protein avg", value: `${fmt(last.prot)}<span class="unit"> g/day</span>`, delta: `${last.hits}/${last.logged} days ≥100g`, cls: last.prot >= 100 ? "good" : "bad" },
+    { label: "Steps avg", value: `${fmt(last.steps)}`, delta: prev ? `${last.steps >= prev.steps ? "+" : ""}${fmt(last.steps - prev.steps)} vs prior wk` : "", cls: "" },
+    { label: "Sleep avg", value: `${sleepFmt(last.sleep)}`, delta: last.deficit ? `deficit ~${fmt(Math.abs(last.deficit))} kcal/day` : "", cls: "" },
+  ];
+  $("tiles").innerHTML = tiles.map(t =>
+    `<div class="tile"><div class="label">${t.label}</div><div class="value">${t.value}</div><div class="delta ${t.cls}">${t.delta}</div></div>`).join("");
+
+  const span = META.startWeight - META.goal;
+  const pct = Math.min(100, (lost / span) * 100);
+  $("progStart").textContent = `${fmt(META.startWeight,1)} start`;
+  $("progGoal").textContent = `${META.goal} goal`;
+  $("progPct").textContent = `${fmt(pct,0)}% of the way`;
+  $("progFill").style.width = pct + "%";
+  $("progMark").style.left = ((META.startWeight - META.originalGoal) / span * 100) + "%";
+  $("progNote").textContent = `Latest read: ${fmt(latestW[1],1)} lbs (${fmtDate(parseD(latestW[0]))}, ${latestW[2].toUpperCase()}) · original ${META.originalGoal} goal (marker) crossed July 16 · ${fmt(toGoal,1)} lbs remain to ${META.goal}`;
+
+  $("focusDesc").textContent = META.focusDesc;
+  $("focusList").innerHTML = META.focus.map(f => `<li>${f}</li>`).join("");
+  $("foot").innerHTML = `Data source: weekly check-in summaries + Health Connect / Samsung Health exports · maintained via the Sunday check-in workflow · this page is unlisted, not private`;
+}
+
+// ---------- range state ----------
+let rangeDays = "all";
+document.querySelectorAll(".rbtn").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".rbtn").forEach(x => x.classList.remove("active"));
+  b.classList.add("active");
+  rangeDays = b.dataset.range;
+  render();
+}));
+
+function cutoffDate() {
+  if (rangeDays === "all") return null;
+  const last = parseD(DAILY_WEIGHTS[DAILY_WEIGHTS.length - 1][0]);
+  return new Date(last.getTime() - (+rangeDays) * 86400000);
+}
+
+// ---------- svg helpers ----------
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(NS, tag);
+  for (const k in attrs) e.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+function niceTicks(min, max, count) {
+  const span = max - min || 1;
+  const step0 = span / count;
+  const mag = Math.pow(10, Math.floor(Math.log10(step0)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => span / s <= count) || mag * 10;
+  const ticks = [];
+  for (let v = Math.ceil(min / step) * step; v <= max + 1e-9; v += step) ticks.push(Math.round(v * 100) / 100);
+  return ticks;
+}
+function makeTip(box) {
+  let t = box.querySelector(".tooltip");
+  if (!t) { t = document.createElement("div"); t.className = "tooltip"; box.appendChild(t); }
+  return t;
+}
+
+// ---------- weight line chart ----------
+function drawWeight() {
+  const box = $("weightChart");
+  box.innerHTML = "";
+  const cut = cutoffDate();
+  let pts = DAILY_WEIGHTS.map(d => ({ t: parseD(d[0]).getTime(), v: d[1], type: d[2], date: d[0] }));
+  if (cut) pts = pts.filter(p => p.t >= cut.getTime());
+  if (pts.length < 2) { box.innerHTML = "<div class='desc'>Not enough data in range</div>"; return; }
+
+  const W = 1040, H = 340, mL = 46, mR = 14, mT = 16, mB = 28;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, box);
+  const x0 = pts[0].t, x1 = pts[pts.length - 1].t;
+  const X = t => mL + (t - x0) / (x1 - x0) * (W - mL - mR);
+
+  let vMin = Math.min(...pts.map(p => p.v)), vMax = Math.max(...pts.map(p => p.v));
+  if (rangeDays === "all") vMin = Math.min(vMin, META.goal); // keep the 215 goal line in view
+  const pad = (vMax - vMin) * 0.06 + 0.5;
+  vMin -= pad; vMax += pad;
+  const Y = v => mT + (vMax - v) / (vMax - vMin) * (H - mT - mB);
+
+  // grid + y labels
+  niceTicks(vMin, vMax, 6).forEach(v => {
+    el("line", { x1: mL, x2: W - mR, y1: Y(v), y2: Y(v), stroke: css("--grid"), "stroke-width": 1 }, svg);
+    el("text", { x: mL - 8, y: Y(v) + 4, "text-anchor": "end", "font-size": 11, fill: css("--muted") }, svg).textContent = fmt(v);
+  });
+  // x labels ~6
+  const n = pts.length;
+  for (let i = 0; i < 6; i++) {
+    const p = pts[Math.min(n - 1, Math.round(i * (n - 1) / 5))];
+    el("text", { x: X(p.t), y: H - 8, "text-anchor": "middle", "font-size": 11, fill: css("--muted") }, svg).textContent = fmtDate(new Date(p.t));
+  }
+
+  // goal lines
+  [[META.originalGoal, `236 (crossed)`], [META.goal, `215 goal`]].forEach(([g, lab]) => {
+    if (g > vMin && g < vMax) {
+      el("line", { x1: mL, x2: W - mR, y1: Y(g), y2: Y(g), stroke: css("--muted"), "stroke-width": 1.5, "stroke-dasharray": "5 4" }, svg);
+      el("text", { x: W - mR - 4, y: Y(g) - 5, "text-anchor": "end", "font-size": 11, "font-weight": 600, fill: css("--ink-2") }, svg).textContent = lab;
+    }
+  });
+
+  // milestones
+  MILESTONES.forEach(m => {
+    const t = parseD(m.date).getTime();
+    if (t < x0 || t > x1) return;
+    el("line", { x1: X(t), x2: X(t), y1: mT, y2: H - mB, stroke: css("--baseline"), "stroke-width": 1, "stroke-dasharray": "2 4" }, svg);
+    el("text", { x: X(t) + 4, y: mT + 10, "font-size": 10, fill: css("--muted") }, svg).textContent = m.label;
+  });
+
+  // line + points
+  const path = pts.map((p, i) => `${i ? "L" : "M"}${X(p.t).toFixed(1)},${Y(p.v).toFixed(1)}`).join("");
+  el("path", { d: path, fill: "none", stroke: css("--blue"), "stroke-width": 2, "stroke-linejoin": "round" }, svg);
+  pts.forEach(p => {
+    el("circle", { cx: X(p.t), cy: Y(p.v), r: p.type === "pm" ? 2.5 : 3.5,
+      fill: p.type === "pm" ? css("--surface-1") : css("--blue"),
+      stroke: css("--blue"), "stroke-width": 1.5 }, svg);
+  });
+
+  // crosshair + tooltip
+  const tip = makeTip(box);
+  const cross = el("line", { y1: mT, y2: H - mB, stroke: css("--baseline"), "stroke-width": 1, opacity: 0 }, svg);
+  const hoverDot = el("circle", { r: 6, fill: "none", stroke: css("--blue"), "stroke-width": 2, opacity: 0 }, svg);
+  svg.addEventListener("mousemove", ev => {
+    const r = svg.getBoundingClientRect();
+    const mx = (ev.clientX - r.left) / r.width * W;
+    let best = pts[0], bd = Infinity;
+    pts.forEach(p => { const d = Math.abs(X(p.t) - mx); if (d < bd) { bd = d; best = p; } });
+    cross.setAttribute("x1", X(best.t)); cross.setAttribute("x2", X(best.t)); cross.setAttribute("opacity", 1);
+    hoverDot.setAttribute("cx", X(best.t)); hoverDot.setAttribute("cy", Y(best.v)); hoverDot.setAttribute("opacity", 1);
+    tip.style.left = (X(best.t) / W * 100) + "%";
+    tip.style.top = (Y(best.v) / H * 100) + "%";
+    tip.innerHTML = `<strong>${fmt(best.v,1)} lbs</strong> · ${best.type.toUpperCase()}<br>${fmtDate(new Date(best.t))} · ${fmt(META.startWeight - best.v,1)} lost`;
+    tip.style.opacity = 1;
+  });
+  svg.addEventListener("mouseleave", () => { tip.style.opacity = 0; cross.setAttribute("opacity", 0); hoverDot.setAttribute("opacity", 0); });
+}
+
+// ---------- weekly bar chart factory ----------
+function drawBars(id, cfg) {
+  const box = $(id);
+  box.innerHTML = "";
+  const cut = cutoffDate();
+  let wks = WEEKS.filter(w => cfg.value(w) != null);
+  if (cut) wks = wks.filter(w => parseD(w.end) >= cut);
+  if (!wks.length) { box.innerHTML = "<div class='desc'>No data in range</div>"; return; }
+
+  const W = 520, H = 240, mL = 44, mR = 8, mT = 14, mB = 26;
+  const svg = el("svg", { viewBox: `0 0 ${W} ${H}` }, box);
+  const vals = wks.map(cfg.value);
+  let vMin = cfg.zeroBase ? 0 : Math.min(...vals, cfg.ref ?? Infinity);
+  let vMax = Math.max(...vals, cfg.ref ?? -Infinity);
+  if (cfg.diverging) { const m = Math.max(Math.abs(vMin), Math.abs(vMax)); vMin = -m; vMax = m; }
+  const span = (vMax - vMin) || 1;
+  vMax += span * 0.08; if (!cfg.zeroBase && !cfg.diverging) vMin -= span * 0.08;
+  const Y = v => mT + (vMax - v) / (vMax - vMin) * (H - mT - mB);
+
+  niceTicks(vMin, vMax, 5).forEach(v => {
+    el("line", { x1: mL, x2: W - mR, y1: Y(v), y2: Y(v), stroke: css("--grid"), "stroke-width": 1 }, svg);
+    el("text", { x: mL - 6, y: Y(v) + 4, "text-anchor": "end", "font-size": 10, fill: css("--muted") }, svg).textContent = cfg.tickFmt ? cfg.tickFmt(v) : fmt(v);
+  });
+
+  const bw = (W - mL - mR) / wks.length;
+  const bar = Math.min(30, bw - 2);
+  const zero = cfg.diverging ? Y(0) : Y(Math.max(vMin, 0));
+  const tip = makeTip(box);
+
+  wks.forEach((w, i) => {
+    const v = cfg.value(w);
+    const cx = mL + bw * i + bw / 2;
+    const yv = Y(v);
+    const top = Math.min(yv, zero), h = Math.max(2, Math.abs(yv - zero));
+    const color = cfg.color ? cfg.color(w, v) : css("--blue");
+    const r = el("rect", { x: cx - bar / 2, y: top, width: bar, height: h, rx: 3, fill: color }, svg);
+    // hover target (full column)
+    const hit = el("rect", { x: mL + bw * i, y: mT, width: bw, height: H - mT - mB, fill: "transparent" }, svg);
+    const show = () => {
+      r.setAttribute("opacity", 0.8);
+      tip.style.left = (cx / W * 100) + "%";
+      tip.style.top = (top / H * 100) + "%";
+      tip.innerHTML = `<strong>W${w.n}</strong> ${w.label}<br>${cfg.tip(w, v)}`;
+      tip.style.opacity = 1;
+    };
+    hit.addEventListener("mousemove", show);
+    hit.addEventListener("mouseleave", () => { r.setAttribute("opacity", 1); tip.style.opacity = 0; });
+    if (wks.length <= 16) {
+      el("text", { x: cx, y: H - 8, "text-anchor": "middle", "font-size": 9.5, fill: css("--muted") }, svg).textContent = w.n;
+    }
+  });
+  // x-axis caption
+  el("text", { x: mL, y: H - 8, "text-anchor": "end", "font-size": 9.5, fill: css("--muted") }, svg).textContent = "wk";
+
+  if (cfg.ref != null && cfg.ref > vMin && cfg.ref < vMax) {
+    el("line", { x1: mL, x2: W - mR, y1: Y(cfg.ref), y2: Y(cfg.ref), stroke: css("--ink-2"), "stroke-width": 1.5, "stroke-dasharray": "5 4" }, svg);
+    el("text", { x: W - mR - 2, y: Y(cfg.ref) - 4, "text-anchor": "end", "font-size": 10, "font-weight": 600, fill: css("--ink-2") }, svg).textContent = cfg.refLabel;
+  }
+  if (cfg.diverging) el("line", { x1: mL, x2: W - mR, y1: zero, y2: zero, stroke: css("--baseline"), "stroke-width": 1.5 }, svg);
+}
+
+// ---------- training strip ----------
+function drawTraining() {
+  const strip = $("trainStrip");
+  const marks = { complete: ["✓", "var(--status-good)"], partial: ["◐", "var(--status-serious)"], missed: ["✕", "var(--status-critical)"], pre: ["–", "var(--muted)"] };
+  strip.innerHTML = WEEKS.filter(w => w.train !== "pre").map(w => {
+    const [sym, col] = marks[w.train];
+    const lbl = { complete: "done", partial: "1 of 2", missed: "missed" }[w.train];
+    return `<div class="train-cell" title="Week ${w.n} (${w.label}): ${lbl}"><span class="wk">W${w.n}</span><span class="st" style="color:${col}">${sym}</span><span class="wk">${lbl}</span></div>`;
+  }).join("");
+}
+
+// ---------- table ----------
+function drawTable() {
+  const t = $("weekTable");
+  const rows = [...WEEKS].reverse().map(w => {
+    const chgCls = w.chg < 0 ? "neg" : w.chg > 0 ? "pos" : "";
+    const trainTxt = { pre: "—", complete: "✓ A+B", partial: "◐ one", missed: "✕ none" }[w.train];
+    return `<tr>
+      <td>W${w.n} · ${w.label}${w.note ? `<div class="flag">${w.note}</div>` : ""}</td>
+      <td>${fmt(w.wt,1)}</td>
+      <td class="${chgCls}">${w.chg > 0 ? "+" : ""}${fmt(w.chg,1)}</td>
+      <td>${fmt(w.prot)}g · ${w.hits}/${w.logged}</td>
+      <td>${fmt(w.cal)}</td>
+      <td>${w.deficit != null ? "−" + fmt(Math.abs(w.deficit)) : "—"}</td>
+      <td>${fmt(w.steps)}</td>
+      <td>${sleepFmt(w.sleep)}</td>
+      <td>${trainTxt}</td>
+    </tr>`;
+  }).join("");
+  t.innerHTML = `<thead><tr><th>Week</th><th>Close (lbs)</th><th>Δ wk</th><th>Protein</th><th>Cal/day</th><th>Deficit</th><th>Steps</th><th>Sleep</th><th>Training</th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+// ---------- render all ----------
+function render() {
+  drawWeight();
+  drawBars("deltaChart", {
+    value: w => w.chg, diverging: true,
+    color: (w, v) => v <= 0 ? css("--blue") : css("--red"),
+    tip: (w, v) => `${v > 0 ? "+" : ""}${fmt(v,1)} lbs · close ${fmt(w.wt,1)}${w.note ? `<br><em>${w.note}</em>` : ""}`,
+  });
+  drawBars("proteinChart", {
+    value: w => w.prot, ref: 100, refLabel: "100g target", zeroBase: false,
+    color: (w, v) => v >= 100 ? css("--blue") : css("--blue-soft"),
+    tip: (w, v) => `${fmt(v)}g avg · ${w.hits}/${w.logged} days ≥100g`,
+  });
+  drawBars("calChart", {
+    value: w => w.cal, ref: 1400, refLabel: "1,400 floor", zeroBase: false,
+    tip: (w, v) => `${fmt(v)} kcal/day avg`,
+  });
+  drawBars("deficitChart", {
+    value: w => w.deficit == null ? null : Math.abs(w.deficit), zeroBase: true,
+    tip: (w, v) => `~−${fmt(v)} kcal/day calibrated<br>≈ ${fmt(v * 7 / 3500, 1)} lb/wk implied fat loss`,
+  });
+  drawBars("stepsChart", {
+    value: w => w.steps, zeroBase: true,
+    tip: (w, v) => `${fmt(v)} steps/day avg`,
+  });
+  drawBars("sleepChart", {
+    value: w => w.sleep, ref: 420, refLabel: "7h", zeroBase: false,
+    tickFmt: v => `${Math.floor(v/60)}h${v % 60 ? String(Math.round(v%60)).padStart(2,"0") : ""}`,
+    tip: (w, v) => `${sleepFmt(v)} avg asleep`,
+  });
+  drawTraining();
+  drawTable();
+}
+
+renderStatic();
+render();
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", render);
+</script>
+</body>
+</html>
