@@ -245,24 +245,24 @@
    ================================================================ */
 
 const META = {
-  updated: "2026-07-29",
+  updated: "2026-08-02",
   startWeight: 286.3,
   startDate: "2026-03-03",
   originalGoal: 236,
   goal: 215,
   dose: "7.5mg",
-  doseNote: "Third 7.5mg injection July 26. Reported side effects: slower digestion, mild constipation — Jake rates them as not significant.",
+  doseNote: "Fourth 7.5mg injection August 2 (confirmed). No significant side effects reported this week. Standing instruction: assume 7.5mg going forward unless stated otherwise.",
   injectionDay: "Sunday",
-  troughWindow: "July 31 – Aug 2",
-  statusLine: "<strong>Week 21 has no clean weekly close</strong> — the only reading was Jul 23 mid-week, and Martha's Vineyard (Jul 23–Aug 2) means no scale. The 0.0 lb change is a data gap, not a flat week; expect Week 22 to have no weight data at all. <strong>Lifting went to zero for the second time in three weeks</strong> — that's the item to fix.",
-  focusDesc: "From the Week 21 summary (July 19–25)",
+  troughWindow: "August 6 – 8",
+  statusLine: "<strong>231.2 lbs on a clean fasted Aug 1 close — 55.1 lbs down, 16.2 to go.</strong> The −0.9 lb move spans nine days off a placeholder prior, so don't trend off it. Protein held at 98.0g and sleep hit 6h59m, the best week on record. <strong>Lifting was zero for the second week straight and three of the last four</strong> — the vacation explanation expires today.",
+  focusDesc: "From the Week 22 summary (July 26 – Aug 1)",
   focus: [
-    "<strong>Lifting is the problem, not the food.</strong> Zero sessions in two of the last three weeks, at 17 lbs to goal, where lean-mass protection matters most. Bodyweight sessions on vacation are the fix — a third missed week is the thing to avoid.",
-    "<strong>Protein as the vacation anchor.</strong> 96.9g avg through travel + trough is a near-miss on a hard week. Lunch is the anchor; breakfast skipped is still the strongest predictor of a miss.",
-    "<strong>Watch Monday 7/20, don't worry about it.</strong> 1,225 cal / 56g protein / 2,039 steps in week two at 7.5mg. One day is noise. Three is a dose-tolerance signal for Dr. Floersch.",
-    "<strong>Trough window July 31 – Aug 2</strong> — falls mid-vacation. Front-load protein those mornings.",
-    "<strong>Body composition scan (DEXA/InBody).</strong> Still unscheduled and now the most time-sensitive open item. Schedule independently of the Sept 28 appointment.",
-    "<strong>TDEE baseline held at 2,670.</strong> The 22-day span gives 2,854, but moving the anchor one day swings it 195 kcal — too short to trust. Vacation gap delays firming it up.",
+    "<strong>Week 23 is the lifting return week.</strong> No travel, no scale gap, no explanation available. At 16.2 lbs out, in a deficit, on a GLP-1, lifting is the only input that protects lean mass — 98g protein is raw material without the signal.",
+    "<strong>Body composition scan (DEXA/InBody) — book it this week.</strong> Top open item, flagged urgent across multiple check-ins. It's the one action that converts the lean-mass argument into a number. Schedule independently of the Sept 28 appointment.",
+    "<strong>Two sub-floor days (1,310 and 1,210) around the travel transition.</strong> Both travel-confounded and protein still averaged 98g, so not under-fueling by intent. Another clustered run at 7.5mg becomes a Floersch tolerance question.",
+    "<strong>Trough window August 6–8</strong> — first full week back on structure, right as appetite suppression fades. Front-load protein those mornings.",
+    "<strong>TDEE baseline held at 2,670.</strong> The 31-day span gives 2,731; bracket tightened to ~2,583–2,731, and 2,670 now sits near the center rather than the conservative edge. Revisit at 6+ weeks of span.",
+    "<strong>Sleep improved via more time in bed, not less fragmentation.</strong> 3–4 AM wake-ups on five of seven nights, 41 min awake/night vs Week 21's ~24. Still the standing Floersch item.",
   ],
 };
 
@@ -287,6 +287,7 @@ const WEEKS = [
   { n: 19, label: "Jul 5–11",       end: "2026-07-11", wt: 236.7, chg: 0.2,  prot: 117, hits: 6, logged: 7, cal: 1972, steps: 8553,  sleep: 439,  deficit: -698, train: "missed",   note: "flat scale over real deficit — HCTZ fluid masking" },
   { n: 20, label: "Jul 12–18",      end: "2026-07-18", wt: 232.1, chg: -4.6, prot: 107, hits: 6, logged: 7, cal: 2033, steps: 8380,  sleep: 436,  deficit: -637, train: "complete", note: "goal crossed; drop fluid-amplified (~1.3 lb real fat)" },
   { n: 21, label: "Jul 19–25",      end: "2026-07-25", wt: 232.1, chg: 0.0,  prot: 97,  hits: 4, logged: 7, cal: 1817, steps: 9566,  sleep: 386,  deficit: -853, train: "missed",   note: "NO clean close — only read was Jul 23 mid-week; travel, no scale. Not a flat week." },
+  { n: 22, label: "Jul 26–Aug 1",   end: "2026-08-01", wt: 231.2, chg: -0.9, prot: 98,  hits: 3, logged: 7, cal: 1912, steps: 8641,  sleep: 419,  deficit: -758, train: "missed",   note: "clean fasted close Aug 1, but −0.9 spans 9 days off a placeholder prior; best sleep week on record" },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
@@ -314,7 +315,8 @@ const DAILY_WEIGHTS = [
   ["2026-07-02",236.5,"am"],["2026-07-07",236.9,"pm"],["2026-07-09",236.7,"am"],
   ["2026-07-11",236.3,"pm"],["2026-07-13",235.0,"pm"],["2026-07-14",233.6,"pm"],
   ["2026-07-16",232.8,"am"],["2026-07-17",232.1,"am"],
-  ["2026-07-23",232.1,"am"],
+  ["2026-07-23",232.1,"am"],["2026-07-30",232.1,"pm"],["2026-07-31",231.9,"am"],
+  ["2026-08-01",231.2,"am"],
 ];
 
 const MILESTONES = [
@@ -323,6 +325,7 @@ const MILESTONES = [
   { date: "2026-04-21", label: "Lifting starts" },
   { date: "2026-05-17", label: "HCTZ removed" },
   { date: "2026-07-16", label: "236 goal crossed" },
+  { date: "2026-07-19", label: "Dose → 7.5mg" },
 ];
 
 /* ================= END OF DATA BLOCK ================= */
