@@ -245,24 +245,24 @@
    ================================================================ */
 
 const META = {
-  updated: "2026-08-02",
+  updated: "2026-08-09",
   startWeight: 286.3,
   startDate: "2026-03-03",
   originalGoal: 236,
   goal: 215,
   dose: "7.5mg",
-  doseNote: "Fourth 7.5mg injection August 2 (confirmed). No significant side effects reported this week. Standing instruction: assume 7.5mg going forward unless stated otherwise.",
+  doseNote: "Fifth 7.5mg injection August 9 (confirmed). No side effects reported. Standing instruction: assume 7.5mg going forward unless stated otherwise.",
   injectionDay: "Sunday",
-  troughWindow: "August 6 – 8",
-  statusLine: "<strong>231.2 lbs on a clean fasted Aug 1 close — 55.1 lbs down, 16.2 to go.</strong> The −0.9 lb move spans nine days off a placeholder prior, so don't trend off it. Protein held at 98.0g and sleep hit 6h59m, the best week on record. <strong>Lifting was zero for the second week straight and three of the last four</strong> — the vacation explanation expires today.",
-  focusDesc: "From the Week 22 summary (July 26 – Aug 1)",
+  troughWindow: "August 13 – 15",
+  statusLine: "<strong>229.0 lbs on a clean fasted Aug 7 close — 57.3 lbs down, 14.0 to go, under 230 for the first time.</strong> Clean fasted reads on both ends make this the first properly validating window in a month. Sleep set a program record at 7h19m and lifting returned after a 19-day gap. <strong>Steps and the deficit model are void</strong> — mid-week phone migration lost the activity data.",
+  focusDesc: "From the Week 23 summary (Aug 2 – 8)",
   focus: [
-    "<strong>Week 23 is the lifting return week.</strong> No travel, no scale gap, no explanation available. At 16.2 lbs out, in a deficit, on a GLP-1, lifting is the only input that protects lean mass — 98g protein is raw material without the signal.",
-    "<strong>Body composition scan (DEXA/InBody) — book it this week.</strong> Top open item, flagged urgent across multiple check-ins. It's the one action that converts the lean-mass argument into a number. Schedule independently of the Sept 28 appointment.",
-    "<strong>Two sub-floor days (1,310 and 1,210) around the travel transition.</strong> Both travel-confounded and protein still averaged 98g, so not under-fueling by intent. Another clustered run at 7.5mg becomes a Floersch tolerance question.",
-    "<strong>Trough window August 6–8</strong> — first full week back on structure, right as appetite suppression fades. Front-load protein those mornings.",
-    "<strong>TDEE baseline held at 2,670.</strong> The 31-day span gives 2,731; bracket tightened to ~2,583–2,731, and 2,670 now sits near the center rather than the conservative edge. Revisit at 6+ weeks of span.",
-    "<strong>Sleep improved via more time in bed, not less fragmentation.</strong> 3–4 AM wake-ups on five of seven nights, 41 min awake/night vs Week 21's ~24. Still the standing Floersch item.",
+    "<strong>Left groin soreness after Day A — hold or substitute the unilateral work.</strong> Three runs (133 min) plus a lift plus 180 min of other sessions, off a three-week baseline of zero. Adductor strain is live; swap Reverse Lunge for a bilateral pattern until it settles. Persisting past a week is a Floersch item.",
+    "<strong>Injection-day protein at 53g is the soft spot, not the trough.</strong> The trough ran 113 / 98 / 125 — the best days of the week. Sunday and Monday alone cost the 100g average. Today is an injection day heading into heavy travel; that's where 53g becomes a pattern.",
+    "<strong>Week 24 is travel end to end</strong> — DC/Leesburg Aug 9–11, Springfield IL Aug 12–14, with the trough window (Aug 13–15) sitting inside it. Front-load protein; lunch is the anchor. A 12:30p retreat start makes breakfast the vulnerable meal.",
+    "<strong>Body composition scan (DEXA/InBody) — still unscheduled across three check-ins.</strong> Top open item at 14.0 lbs from goal. One lifting session doesn't answer the lean-mass question; a scan does. Book it independently of Sept 28.",
+    "<strong>TDEE recalibration expected next check-in, likely upward.</strong> 37-day span gives 2,772; bracket is ~2,650–2,772 and has shifted up, so the held 2,670 now sits at the bottom edge. Span hits 6.3 weeks next week — the trigger point.",
+    "<strong>Confirm steps and Total Calories Burned recover now that the phone is settled.</strong> If they don't, the deficit model needs a different input. Also: second straight week with no BP readings — take manual ones before Sept 28.",
   ],
 };
 
@@ -288,6 +288,7 @@ const WEEKS = [
   { n: 20, label: "Jul 12–18",      end: "2026-07-18", wt: 232.1, chg: -4.6, prot: 107, hits: 6, logged: 7, cal: 2033, steps: 8380,  sleep: 436,  deficit: -637, train: "complete", note: "goal crossed; drop fluid-amplified (~1.3 lb real fat)" },
   { n: 21, label: "Jul 19–25",      end: "2026-07-25", wt: 232.1, chg: 0.0,  prot: 97,  hits: 4, logged: 7, cal: 1817, steps: 9566,  sleep: 386,  deficit: -853, train: "missed",   note: "NO clean close — only read was Jul 23 mid-week; travel, no scale. Not a flat week." },
   { n: 22, label: "Jul 26–Aug 1",   end: "2026-08-01", wt: 231.2, chg: -0.9, prot: 98,  hits: 3, logged: 7, cal: 1912, steps: 8641,  sleep: 419,  deficit: -758, train: "missed",   note: "clean fasted close Aug 1, but −0.9 spans 9 days off a placeholder prior; best sleep week on record" },
+  { n: 23, label: "Aug 2–8",        end: "2026-08-07", wt: 229.0, chg: -2.2, prot: 94,  hits: 3, logged: 7, cal: 1784, steps: null,  sleep: 439,  deficit: null, train: "partial",  note: "clean fasted closes both ends (6-day span); steps + deficit VOID — mid-week phone migration; first lift since Jul 18" },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
@@ -316,7 +317,7 @@ const DAILY_WEIGHTS = [
   ["2026-07-11",236.3,"pm"],["2026-07-13",235.0,"pm"],["2026-07-14",233.6,"pm"],
   ["2026-07-16",232.8,"am"],["2026-07-17",232.1,"am"],
   ["2026-07-23",232.1,"am"],["2026-07-30",232.1,"pm"],["2026-07-31",231.9,"am"],
-  ["2026-08-01",231.2,"am"],
+  ["2026-08-01",231.2,"am"],["2026-08-04",230.8,"am"],["2026-08-07",229.0,"am"],
 ];
 
 const MILESTONES = [
@@ -326,6 +327,7 @@ const MILESTONES = [
   { date: "2026-05-17", label: "HCTZ removed" },
   { date: "2026-07-16", label: "236 goal crossed" },
   { date: "2026-07-19", label: "Dose → 7.5mg" },
+  { date: "2026-08-07", label: "Under 230" },
 ];
 
 /* ================= END OF DATA BLOCK ================= */
@@ -363,7 +365,8 @@ function renderStatic() {
     { label: "Total lost", value: `${fmt(lost,1)}<span class="unit"> lbs</span>`, delta: `from ${fmt(META.startWeight,1)} start`, cls: "" },
     { label: `To ${META.goal} goal`, value: `${fmt(toGoal,1)}<span class="unit"> lbs</span>`, delta: `≈ ${Math.round(toGoal/0.8)} wks at 0.8 lb/wk`, cls: "" },
     { label: "Protein avg", value: `${fmt(last.prot)}<span class="unit"> g/day</span>`, delta: `${last.hits}/${last.logged} days ≥100g`, cls: last.prot >= 100 ? "good" : "bad" },
-    { label: "Steps avg", value: `${fmt(last.steps)}`, delta: prev ? `${last.steps >= prev.steps ? "+" : ""}${fmt(last.steps - prev.steps)} vs prior wk` : "", cls: "" },
+    { label: "Steps avg", value: last.steps == null ? "—" : `${fmt(last.steps)}`,
+      delta: last.steps == null ? "no data this week" : (prev && prev.steps != null ? `${last.steps >= prev.steps ? "+" : ""}${fmt(last.steps - prev.steps)} vs prior wk` : ""), cls: "" },
     { label: "Sleep avg", value: `${sleepFmt(last.sleep)}`, delta: last.deficit ? `deficit ~${fmt(Math.abs(last.deficit))} kcal/day` : "", cls: "" },
   ];
   $("tiles").innerHTML = tiles.map(t =>
@@ -582,7 +585,7 @@ function drawTable() {
       <td>${fmt(w.prot)}g · ${w.hits}/${w.logged}</td>
       <td>${fmt(w.cal)}</td>
       <td>${w.deficit != null ? "−" + fmt(Math.abs(w.deficit)) : "—"}</td>
-      <td>${fmt(w.steps)}</td>
+      <td>${w.steps != null ? fmt(w.steps) : "—"}</td>
       <td>${sleepFmt(w.sleep)}</td>
       <td>${trainTxt}</td>
     </tr>`;
