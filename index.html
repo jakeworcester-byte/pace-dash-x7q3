@@ -245,24 +245,24 @@
    ================================================================ */
 
 const META = {
-  updated: "2026-08-09",
+  updated: "2026-08-16",
   startWeight: 286.3,
   startDate: "2026-03-03",
   originalGoal: 236,
   goal: 215,
   dose: "7.5mg",
-  doseNote: "Fifth 7.5mg injection August 9 (confirmed). No side effects reported. Standing instruction: assume 7.5mg going forward unless stated otherwise.",
+  doseNote: "Sixth 7.5mg injection August 16 (confirmed). No side effects reported. Standing instruction: assume 7.5mg going forward unless stated otherwise.",
   injectionDay: "Sunday",
-  troughWindow: "August 13 – 15",
-  statusLine: "<strong>229.0 lbs on a clean fasted Aug 7 close — 57.3 lbs down, 14.0 to go, under 230 for the first time.</strong> Clean fasted reads on both ends make this the first properly validating window in a month. Sleep set a program record at 7h19m and lifting returned after a 19-day gap. <strong>Steps and the deficit model are void</strong> — mid-week phone migration lost the activity data.",
-  focusDesc: "From the Week 23 summary (Aug 2 – 8)",
+  troughWindow: "August 21 – 23",
+  statusLine: "<strong>229.0 lbs, flat on paper — but the two reads aren't comparable.</strong> Aug 7 was fasted AM; Aug 15 was a 13:17 read after a travel week (DC/Leesburg, KC, Springfield IL, State Fair). A midday read typically sits 1–2 lbs high, so the real number is closer to 227–228. <strong>Zero resistance sessions this week — one lift in five weeks now</strong> — despite a strong 6,963 steps/day average through two flights and a six-hour drive. That's an equipment-access problem, not a motivation one; a travel-ready bodyweight card is the fix.",
+  focusDesc: "From the Week 24 summary (Aug 9 – 15)",
   focus: [
-    "<strong>Left groin soreness after Day A — hold or substitute the unilateral work.</strong> Three runs (133 min) plus a lift plus 180 min of other sessions, off a three-week baseline of zero. Adductor strain is live; swap Reverse Lunge for a bilateral pattern until it settles. Persisting past a week is a Floersch item.",
-    "<strong>Injection-day protein at 53g is the soft spot, not the trough.</strong> The trough ran 113 / 98 / 125 — the best days of the week. Sunday and Monday alone cost the 100g average. Today is an injection day heading into heavy travel; that's where 53g becomes a pattern.",
-    "<strong>Week 24 is travel end to end</strong> — DC/Leesburg Aug 9–11, Springfield IL Aug 12–14, with the trough window (Aug 13–15) sitting inside it. Front-load protein; lunch is the anchor. A 12:30p retreat start makes breakfast the vulnerable meal.",
-    "<strong>Body composition scan (DEXA/InBody) — still unscheduled across three check-ins.</strong> Top open item at 14.0 lbs from goal. One lifting session doesn't answer the lean-mass question; a scan does. Book it independently of Sept 28.",
-    "<strong>TDEE recalibration expected next check-in, likely upward.</strong> 37-day span gives 2,772; bracket is ~2,650–2,772 and has shifted up, so the held 2,670 now sits at the bottom edge. Span hits 6.3 weeks next week — the trigger point.",
-    "<strong>Confirm steps and Total Calories Burned recover now that the phone is settled.</strong> If they don't, the deficit model needs a different input. Also: second straight week with no BP readings — take manual ones before Sept 28.",
+    "<strong>One resistance session in five weeks is the program's largest open item.</strong> Both dumbbells stayed home through three hotel nights. A bodyweight Day A/B template already exists (used Jun 17) and needs to become a permanent travel card alongside the protein powder.",
+    "<strong>Sub-floor calorie cluster is now six days across three weeks</strong> — two of them this week (Aug 11 retreat + flight, Aug 14 State Fair), both under 1,300 cal and both under 45g protein. Both are travel days with no meal you control. This belongs in front of Dr. Floersch: is 7.5mg suppression now deep enough that unstructured days collapse intake by default.",
+    "<strong>What's working: injection-day protein held at 85.5g</strong>, up from 53g three weeks ago, and Aug 15 posted 152.3g — the highest protein day on record. The capacity is there; the gap is a default for days with zero control, not discipline.",
+    "<strong>A clean fasted-AM weigh-in is now the single most useful data point available.</strong> It resolves the flat-vs-real-loss question and extends the TDEE span to ~47 days, expected to trigger a recalibration upward from the held 2,670 baseline (span regression already at 2,772).",
+    "<strong>Body composition scan (DEXA/InBody) — still unscheduled, now four check-ins running.</strong> 14 lbs from goal with one lift in five weeks and no scan means there's no way to know how much of the 57.3 lbs lost is lean mass. Schedule independently of Sept 28.",
+    "<strong>Health Connect step data is unreliable</strong> — likely a Sole treadmill app write conflict burying step counts under overlapping exercise-session records. Fix applied (revoked Sole's write access Aug 16); needs confirmation at next check-in. Historical step trends in this dashboard predate the fix and may be understated.",
   ],
 };
 
@@ -289,6 +289,7 @@ const WEEKS = [
   { n: 21, label: "Jul 19–25",      end: "2026-07-25", wt: 232.1, chg: 0.0,  prot: 97,  hits: 4, logged: 7, cal: 1817, steps: 9566,  sleep: 386,  deficit: -853, train: "missed",   note: "NO clean close — only read was Jul 23 mid-week; travel, no scale. Not a flat week." },
   { n: 22, label: "Jul 26–Aug 1",   end: "2026-08-01", wt: 231.2, chg: -0.9, prot: 98,  hits: 3, logged: 7, cal: 1912, steps: 8641,  sleep: 419,  deficit: -758, train: "missed",   note: "clean fasted close Aug 1, but −0.9 spans 9 days off a placeholder prior; best sleep week on record" },
   { n: 23, label: "Aug 2–8",        end: "2026-08-07", wt: 229.0, chg: -2.2, prot: 94,  hits: 3, logged: 7, cal: 1784, steps: null,  sleep: 439,  deficit: null, train: "partial",  note: "clean fasted closes both ends (6-day span); steps + deficit VOID — mid-week phone migration; first lift since Jul 18" },
+  { n: 24, label: "Aug 9–15",       end: "2026-08-15", wt: 229.0, chg: 0.0,  prot: 85,  hits: 2, logged: 7, cal: 1750, steps: 6963,  sleep: 409,  deficit: -920, train: "missed",   note: "endpoints not comparable — Aug 15 is a 13:17 read, not fasted AM; likely 227-228 real. Zero lifts; steps from Google Health app (Health Connect under-reported all 7 days, see Data Notes)" },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
@@ -318,6 +319,7 @@ const DAILY_WEIGHTS = [
   ["2026-07-16",232.8,"am"],["2026-07-17",232.1,"am"],
   ["2026-07-23",232.1,"am"],["2026-07-30",232.1,"pm"],["2026-07-31",231.9,"am"],
   ["2026-08-01",231.2,"am"],["2026-08-04",230.8,"am"],["2026-08-07",229.0,"am"],
+  ["2026-08-15",229.0,"pm"],
 ];
 
 const MILESTONES = [
