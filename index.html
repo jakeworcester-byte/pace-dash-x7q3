@@ -245,25 +245,25 @@
    ================================================================ */
 
 const META = {
-  updated: "2026-08-24",
+  updated: "2026-08-30",
   startWeight: 286.3,
   startDate: "2026-03-03",
   originalGoal: 236,
   goal: 215,
   dose: "7.5mg",
-  doseNote: "Seventh 7.5mg injection August 16 (confirmed). Aug 23 dose MISSED (medication left at home in Napa) — 4-day makeup window closes Thu Aug 27. Next planned Aug 30 (14-day interval if the gap stands).",
+  doseNote: "Aug 23 dose MISSED (pen left at home in Coeur d'Alene week) — the 4-day makeup window closed Aug 27 unused. 7.5mg resumed Sunday Aug 30 (confirmed) on a 14-day interval; eighth administration at this dose, no re-titration, no side effects through the gap or on resumption.",
   injectionDay: "Sunday",
-  troughWindow: "Open-ended until next injection (missed Aug 23 dose)",
-  statusLine: "<strong>226.10 lbs on a clean fasted-AM read (Aug 20) — a new program low and 60.20 lbs lost from the start.</strong> Only 11.10 lbs to goal. But this is the lead item: the Aug 23 injection was missed (pen left at home in Napa), and the week's lowest calorie day — 650 cal, 35g protein — landed on a home Sunday with no travel excuse, the cleanest evidence yet that peak-dose appetite suppression, not logistics, is driving the sub-floor pattern. The next six days (Coeur d'Alene) carry the opposite risk: a decaying drug level in a resort setting already produced two genuine calorie surpluses (Aug 21–22).",
-  focusDesc: "From the Week 25 summary (Aug 16 – 22)",
+  troughWindow: "Thu Sep 3 – Sat Sep 5 (days 5–7 post Aug 30 injection)",
+  statusLine: "<strong>No weigh-in at all in Week 26 — zero weight records between Aug 21 and Aug 30.</strong> The last valid read is still Aug 20 @ 226.10 lbs, now ten days stale, and every weight figure on this page is frozen there. That is two consecutive thin weeks on the one input the protocol calls most load-bearing, and the span regression has stalled at 50 days as a result. The week itself was better than expected: 90.9g protein — the best since Week 22 — and zero surplus days, both achieved with essentially no tirzepatide on board. The unresolved item is training: 24 days since the last resistance session, one lift in seven weeks.",
+  focusDesc: "From the Week 26 summary (Aug 23 – 29)",
   focus: [
-    "<strong>Missed injection is the lead item.</strong> Aug 23 dose left at home in Napa. The 4-day makeup window closes Thursday Aug 27 — ship the pen to Coeur d'Alene by Wednesday to keep it. If the gap stands, next dose lands Aug 30 on a 14-day interval, with near-total washout by the back half of this week.",
-    "<strong>The Aug 16 sub-floor day breaks the travel excuse.</strong> 650 calories and 35g protein at home, on injection day, with no schedule pressure. The cluster is now seven sub-floor days across four weeks, and this is the first with no logistical explanation — it points at dose, not circumstance. Goes to Dr. Floersch as the top agenda item.",
-    "<strong>226.10 lbs is a real number, not an estimate</strong> — clean fasted-AM read, unlocks the TDEE recalibration below, and is a new program low. Only one reading in the 7-day window, though, so it's a thin close.",
-    "<strong>Baseline TDEE recalibrated: 2,670 → 2,700 kcal/day</strong> (50-day cumulative span regression, Jul 1 anchor). Calibrated deficit this week: −673 avg/day, implied 1.35 lbs lost — reasonably close to the scale.",
-    "<strong>Zero resistance sessions again — one lift in seven weeks now</strong> (still Aug 6). Cardio was strong instead: 188 minutes across 4 sessions, 9,136 steps/day, the best activity week on record. The dumbbells-at-home problem persists; the bodyweight travel card remains unbuilt.",
-    "<strong>The next six days invert the risk.</strong> Coeur d'Alene travel with a washing-out drug level means the usual sub-floor risk flips to a surplus risk — protein still matters, but calories now need watching in the other direction.",
-    "<strong>Body composition scan (DEXA/InBody) — still unscheduled</strong>, now 11 lbs from goal with one lift in seven weeks. This is the single most decision-relevant missing datum in the program.",
+    "<strong>The missing weigh-in is the lead item, not the missed dose.</strong> Health Connect returned zero weight records Aug 21–30. Week 26 has no delta, the deficit model has nothing to validate against, and the headline numbers here are carried from Aug 20. A fasted-AM read closes the week retroactively and advances the span regression to 60 days — it is still the single highest-value two minutes in the program.",
+    "<strong>The Week 25 forecast was wrong, and usefully so.</strong> The prediction was that a washing-out drug level in a resort week would flip the risk to surplus. Week 26 averaged 2,002 cal against 2,027 the week prior and posted <em>zero</em> surplus days against two. Napa produced the surpluses, not the pharmacology — location was the driver all along.",
+    "<strong>Protein went the other way, and it points at the dose.</strong> 90.9g/day vs 76.1g, 3 of 7 target days vs 1 of 7, reversing a three-week slide (98 → 85 → 76 → 91). The extra appetite from the gap bought protein, not calories. Hypothesis with one confounded data point: at 7.5mg, protein intake may be constrained by appetite suppression. The next two weeks at home on-dose are the test.",
+    "<strong>24 days since the last resistance session — this is now the program's dominant risk.</strong> One confirmed lift in seven weeks (Aug 6). The equipment explanation has run out: the bodyweight travel card was built Jun 17 for exactly this and has gone undeployed four consecutive travel weeks. Next session is a <em>re-test at Aug 6 loads</em>, not a progression.",
+    "<strong>Both device-data faults are mechanism-identified and worked around.</strong> Steps and Total Calories Burned were never missing — the aggregation query fails on the minute-granularity records Google Health now writes; records mode returns them intact. Daily deficit rescaling is reinstated on records-mode data. Standing rule: an empty or surprising query result is a statement about the query until a second method confirms it.",
+    "<strong>Baseline TDEE held at 2,700 kcal/day</strong> — the span regression could not advance without an endpoint. Calibrated deficit this week: −698/day, implied 1.40 lbs. Unverifiable against the scale.",
+    "<strong>Body composition scan (DEXA/InBody) — still unscheduled.</strong> 11 lbs from goal, one lift in seven weeks, protein under target four weeks running, and no lean-mass measurement at any point in the program. Does not require Dr. Floersch. Schedule it independently.",
   ],
 };
 
@@ -292,6 +292,7 @@ const WEEKS = [
   { n: 23, label: "Aug 2–8",        end: "2026-08-07", wt: 229.0, chg: -2.2, prot: 94,  hits: 3, logged: 7, cal: 1784, steps: null,  sleep: 439,  deficit: null, train: "partial",  note: "clean fasted closes both ends (6-day span); steps + deficit VOID — mid-week phone migration; first lift since Jul 18" },
   { n: 24, label: "Aug 9–15",       end: "2026-08-15", wt: 229.0, chg: 0.0,  prot: 85,  hits: 2, logged: 7, cal: 1750, steps: 6963,  sleep: 409,  deficit: -920, train: "missed",   note: "endpoints not comparable — Aug 15 is a 13:17 read, not fasted AM; likely 227-228 real. Zero lifts; steps from Google Health app (Health Connect under-reported all 7 days, see Data Notes)" },
   { n: 25, label: "Aug 16–22",      end: "2026-08-20", wt: 226.1, chg: -2.9, prot: 76,  hits: 1, logged: 7, cal: 2027, steps: 9136,  sleep: 385,  deficit: -673, train: "missed",   note: "clean fasted-AM close but only 1 reading, landed Thu not Sat; Aug 23 injection missed; 2 genuine surplus days in Napa (Aug 21-22); zero lifts, one in 7 weeks" },
+  { n: 26, label: "Aug 23–29",      end: "2026-08-29", wt: null,  chg: null, prot: 91,  hits: 3, logged: 7, cal: 2002, steps: 4675, sleep: 395, deficit: -698, train: "missed",   note: "NO CLOSE — zero weight records Aug 21–30; last valid read is Aug 20 @ 226.1. Steps = verified 5-day avg (Aug 25–29) via records mode; Aug 23–24 unrecoverable. Aug 23 dose missed; 7.5mg resumed Aug 30. Zero lifts — 24-day layoff." },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
@@ -333,13 +334,14 @@ const MILESTONES = [
   { date: "2026-07-19", label: "Dose → 7.5mg" },
   { date: "2026-08-07", label: "Under 230" },
   { date: "2026-08-20", label: "60 lbs lost" },
+  { date: "2026-08-23", label: "Dose missed · 14-day gap" },
 ];
 
 /* ================= END OF DATA BLOCK ================= */
 
 const $ = (id) => document.getElementById(id);
 const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
-const fmt = (n, d=0) => n.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
+const fmt = (n, d=0) => n == null ? "—" : n.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d });
 const parseD = (s) => new Date(s + "T12:00:00");
 const fmtDate = (d) => d.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 const sleepFmt = (m) => m == null ? "—" : `${Math.floor(m/60)}h ${String(Math.round(m%60)).padStart(2,"0")}m`;
@@ -358,15 +360,22 @@ function renderStatic() {
   const last = WEEKS[WEEKS.length - 1];
   const prev = WEEKS[WEEKS.length - 2];
   const latestW = DAILY_WEIGHTS[DAILY_WEIGHTS.length - 1];
-  const lost = META.startWeight - last.wt;
-  const toGoal = last.wt - META.goal;
+  // Week close can be null when no valid weigh-in landed in the window.
+  // Headline weight then falls back to the most recent week that has one, labelled stale.
+  const wtWeek = [...WEEKS].reverse().find(w => w.wt != null) || last;
+  const staleWt = wtWeek !== last;
+  const lost = META.startWeight - wtWeek.wt;
+  const toGoal = wtWeek.wt - META.goal;
 
   $("subline").textContent = `Zepbound journey · started ${fmtDate(parseD(META.startDate))}, 2026 · ${META.dose} · updated ${fmtDate(parseD(META.updated))} (Week ${last.n} summary)`;
   $("statusBanner").innerHTML = META.statusLine;
 
   const tiles = [
-    { label: "Current weight", value: `${fmt(last.wt,1)}<span class="unit"> lbs</span>`,
-      delta: `${last.chg > 0 ? "+" : ""}${fmt(last.chg,1)} this week`, cls: last.chg <= 0 ? "good" : "bad" },
+    { label: staleWt ? "Last valid weight" : "Current weight", value: `${fmt(wtWeek.wt,1)}<span class="unit"> lbs</span>`,
+      delta: staleWt
+        ? `no close in W${last.n} · read is ${fmtDate(parseD(latestW[0]))}`
+        : `${last.chg > 0 ? "+" : ""}${fmt(last.chg,1)} this week`,
+      cls: staleWt ? "bad" : (last.chg <= 0 ? "good" : "bad") },
     { label: "Total lost", value: `${fmt(lost,1)}<span class="unit"> lbs</span>`, delta: `from ${fmt(META.startWeight,1)} start`, cls: "" },
     { label: `To ${META.goal} goal`, value: `${fmt(toGoal,1)}<span class="unit"> lbs</span>`, delta: `≈ ${Math.round(toGoal/0.8)} wks at 0.8 lb/wk`, cls: "" },
     { label: "Protein avg", value: `${fmt(last.prot)}<span class="unit"> g/day</span>`, delta: `${last.hits}/${last.logged} days ≥100g`, cls: last.prot >= 100 ? "good" : "bad" },
@@ -581,12 +590,12 @@ function drawTraining() {
 function drawTable() {
   const t = $("weekTable");
   const rows = [...WEEKS].reverse().map(w => {
-    const chgCls = w.chg < 0 ? "neg" : w.chg > 0 ? "pos" : "";
+    const chgCls = w.chg == null ? "" : w.chg < 0 ? "neg" : w.chg > 0 ? "pos" : "";
     const trainTxt = { pre: "—", complete: "✓ A+B", partial: "◐ one", missed: "✕ none" }[w.train];
     return `<tr>
       <td>W${w.n} · ${w.label}${w.note ? `<div class="flag">${w.note}</div>` : ""}</td>
       <td>${fmt(w.wt,1)}</td>
-      <td class="${chgCls}">${w.chg > 0 ? "+" : ""}${fmt(w.chg,1)}</td>
+      <td class="${chgCls}">${w.chg == null ? "—" : (w.chg > 0 ? "+" : "") + fmt(w.chg,1)}</td>
       <td>${fmt(w.prot)}g · ${w.hits}/${w.logged}</td>
       <td>${fmt(w.cal)}</td>
       <td>${w.deficit != null ? "−" + fmt(Math.abs(w.deficit)) : "—"}</td>
