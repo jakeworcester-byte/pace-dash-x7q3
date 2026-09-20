@@ -202,7 +202,7 @@
     </div>
     <div class="card">
       <h2>Calibrated daily deficit</h2>
-      <div class="desc">Modeled avg deficit (kcal/day) · tracked since Week 17 · baseline TDEE revised over time, currently 2,578</div>
+      <div class="desc">Modeled avg deficit (kcal/day) · tracked since Week 17 · baseline TDEE revised over time, currently 2,564</div>
       <div class="chart-box" id="deficitChart"></div>
     </div>
     <div class="card">
@@ -245,27 +245,27 @@
    ================================================================ */
 
 const META = {
-  updated: "2026-09-13",
+  updated: "2026-09-20",
   startWeight: 286.3,
   startDate: "2026-03-03",
   originalGoal: 236,
   goal: 215,
   dose: "7.5mg",
-  doseNote: "7.5mg injected Sunday Sep 13 (confirmed), the tenth administration at this dose. Seven-day interval, cadence holding. Ten weeks at 7.5mg with no side effects reported.",
+  doseNote: "Sep 20 dose HELD by design ahead of a scheduled procedure under general anesthesia on Wed Sep 23. Last dose Sun Sep 13 @ 7.5mg (confirmed), the eleventh administration at this level, no side effects. Sep 13 to Sep 23 is a 10-day hold against a 7-day guideline. Resumption not yet set; Sun Sep 27 would be a 14-day interval and is to be confirmed with the care team, not assumed.",
   injectionDay: "Sunday",
-  troughWindow: "Fri Sep 18 to Sun Sep 20 (days 5 to 7 post Sep 13 injection)",
-  statusLine: "<strong>No weigh-in at all in Week 28. Zero weight records between Sep 6 and Sep 13.</strong> The last clean number is still Sep 4 at 225.50 lbs, now nine days stale, which means the scale has produced one usable reading in 24 days. The deficit model ran unchecked for a second straight week, the span regression cannot extend past Sep 4, and last week's 124 kcal baseline revision is still resting on a single unreplicated number. Total loss stands at 60.8 lbs with 10.5 to the 215 goal, both as of Sep 4. The week's real news is protein: <strong>98.6g/day is the best in the record</strong>, a fourth consecutive week of improvement, and it landed inside a badly disrupted week rather than a calm one. Calories went the other way to a program low of 1,714/day, with two more sub-floor days. Protein rising while calories fall is the shape that costs lean mass, and there is still no body-composition scan after five weeks of asking. Zero lifts, 38 days since Aug 6.",
-  focusDesc: "From the Week 28 summary (Sep 6 to Sep 12)",
+  troughWindow: "Trough passed Sep 18 to Sep 20 and behaved. Now in washout: day 8 post-injection begins Sep 20, reaching a 14-day interval Sep 27. Week 30 is the highest intake-risk week since late August.",
+  statusLine: "<strong>Best week of the program on the measures that matter, and the first one in a month where the data could check itself.</strong> Three fasted-AM reads (Sep 15, 17, 18), monotonically decreasing, closing at <strong>223.10 lbs</strong> — &minus;2.40 lbs over the 14 days back to Sep 4, <strong>63.2 lbs down and 8.1 to the 215 goal</strong>. First time inside 10 lbs of target. <strong>Protein cleared 100g for the first time in the record at 106.8g/day</strong>, the fifth straight week of improvement, and it did it while calories went <em>up</em> to 2,012/day with <strong>zero sub-floor days</strong> — the exact inverse of the lean-mass-risk shape flagged in Week 28. The trough produced the week's two biggest calorie days with protein still at target, and injection day broke its own pattern at 1,710 cal / 90g, the first instance above 1,400 since July. The deficit model was finally checkable and passed: 2.72 lbs predicted against 2.40 delivered, 12% optimistic over 14 days. Baseline TDEE moves to <strong>2,564</strong> cumulative / 2,466 trailing. First body-composition reading came in at 26.1% fat and 88.6 lbs muscle, which downgrades the lean-mass alarm that ran from Week 24 through Week 29. Two real defects: <strong>zero lifts, now a 45-day layoff on a home week with dumbbells available</strong> — equipment is no longer the excuse — and one unrecoverable logging gap on Sep 15. Sep 20 dose held ahead of Wednesday's procedure.",
+  focusDesc: "From the Week 29 summary (Sep 13 to Sep 19)",
   focus: [
-    "<strong>Weigh in fasted-AM Monday, and at least twice more.</strong> Two consecutive weeks of one-or-zero readings have stalled the regression outright. This is the highest-value 30 seconds available, and it is the only thing that converts Week 28 from a hole into a data point.",
-    "<strong>Calories hit a program low while protein hit a program high.</strong> 1,714/day average against 1,970 the week before, with two sub-floor days putting the cluster at 11 days across seven weeks. Protein is no longer the problem; total intake is. Eating more, not less, is the correction here.",
-    "<strong>One bodyweight session.</strong> 38 days since the last lift, one session in eight weeks. Equipment was not the constraint this week. The travel card (Bulgarian split squat, push-ups, single-leg glute bridge, plank) has gone unbuilt five weeks running and needs nothing to deploy.",
-    "<strong>Protein floor for Fridays.</strong> Sep 11 (1,220 cal / 73g) and Sep 1 are the same failure on the same shape of day: a long evening with no default protein item scheduled. Pick the item once and stop re-deciding it.",
-    "<strong>Injection-day intake collapse is now four instances.</strong> Jul 12, Aug 16, Aug 30, Sep 6. Sep 6 is confounded, the other three are clean. Protein held at 90g this time, so the protein half of the pattern is weakening while the calorie half holds. Carry it to the Sep 28 appointment as a dose question.",
-    "<strong>Sleep changed character, not just duration.</strong> Two consecutive nights terminated before 4:15 AM with no re-entry at all, which is different from the brief-arousal pattern logged all year. Four of the last five nights ran under 5h45. Worth raising rather than absorbing.",
-    "<strong>Medical follow-up Wednesday, 7:45 AM.</strong> Questions to ask are written out in the Week 28 summary; take the list rather than reconstructing it in the room.",
-    "<strong>Body composition scan (DEXA or InBody). Still unscheduled.</strong> 60.8 lbs down, 10.5 from goal, one lift in eight weeks, calories at a run low. Five consecutive weekly summaries have flagged this. It does not require a physician referral. Book it.",
-    "<strong>Baseline TDEE stands at 2,578 kcal/day</strong> cumulative, 2,453 trailing, a 125 kcal gap in the RMR-drift direction. <code>Sunday_Checkin_Protocol.md</code> still reads 2,670 and needs a manual edit.",
+    "<strong>Procedure Wednesday, under general anesthesia.</strong> The Sep 20 dose is held; standard fasting instructions still apply in full. A 10-day GLP-1 hold beats the 7-day guideline but does not zero the risk.",
+    "<strong>One resistance session Monday or Tuesday, before the procedure takes the week.</strong> 45 days since Aug 6, and this was a home week with dumbbells and no travel, which means equipment stopped being the blocker. Day A at Aug 6 loads (Goblet 45 · Bench 70 · RDL 80 · BOR 70 · Plank 2&times;40s) as a re-entry, not a progression.",
+    "<strong>The lifting runway is finite now.</strong> If pathology leads to surgery, that is four to six weeks out with real recovery restrictions. The window to bank resistance work is roughly the next four weeks and the first two days are already spent.",
+    "<strong>Hold intake steady through the washout.</strong> The protein structure is working, but it has never been tested without drug support. The Aug 23 miss is the precedent and it produced the first genuine surplus days in weeks.",
+    "<strong>Log the Sep 15 kind of day.</strong> Walk recorded, weigh-in recorded, food not. Zero nutrition records across a day the phone was demonstrably in use. It cost the week a regression input and a seventh protein day, and it is unrecoverable.",
+    "<strong>Keep weighing in fasted-AM.</strong> Three reads this week unblocked the regression after two dead weeks. That is the whole reason this summary could check the model against the scale.",
+    "<strong>215 was set as a scale number and it lands near 23% body fat.</strong> Not an argument to move the goal and emphatically not one to cut harder, but it is worth knowing before deciding what happens after 215. Better appointment question than anything left on the lean-mass list.",
+    "<strong>Baseline TDEE now 2,564 kcal/day</strong> cumulative, 2,466 trailing, a 98 kcal RMR-drift gap that narrowed from 125. <code>Sunday_Checkin_Protocol.md</code> updated to match.",
+    "<strong>Burn-query protocol needs a rewrite.</strong> Aggregation is now confirmed broken at every bucketing level, and records mode dropped from 15-minute to 1-minute granularity, which makes a full week roughly 10,000 records and the 96-bucket normalization step obsolete. The weekly deficit figure does not depend on any of it; only the daily table does. Decide whether that table is worth rebuilding.",
   ],
 };
 
@@ -297,6 +297,7 @@ const WEEKS = [
   { n: 26, label: "Aug 23–29",      end: "2026-08-29", wt: null,  chg: null, prot: 91,  hits: 3, logged: 7, cal: 2002, steps: 4675, sleep: 395, deficit: -698, train: "missed",   note: "NO CLOSE — zero weight records Aug 21–30; last valid read is Aug 20 @ 226.1. Steps = verified 5-day avg (Aug 25–29) via records mode; Aug 23–24 unrecoverable. Aug 23 dose missed; 7.5mg resumed Aug 30. Zero lifts — 24-day layoff." },
   { n: 27, label: "Aug 30–Sep 5",   end: "2026-09-05", wt: 225.5, chg: -0.6, prot: 96,  hits: 3, logged: 6, cal: 1970, steps: null,  sleep: 404, deficit: -758, train: "missed",   note: "clean fasted-AM close Sep 4 @ 225.5, but the only reading in the window and the −0.6 spans 15 days back to Aug 20 (Week 26 had no close). Sep 2 nutrition missing entirely — averages are 6 logged days. Steps not pulled. Zero lifts — 31-day layoff. Span regression revised TDEE to 2,578 cumulative / 2,453 trailing." },
   { n: 28, label: "Sep 6–12",       end: "2026-09-12", wt: null,  chg: null, prot: 99,  hits: 4, logged: 7, cal: 1714, steps: null,  sleep: 393,  deficit: -864, train: "missed",   note: "NO CLOSE. Zero weight records Sep 6–13; last valid read is Sep 4 @ 225.5, now 9 days stale and the only reading in 24 days. Best protein week on record at 98.6g avg, 4 of 7 at target, complete logging all 7 days. Lowest weekly calorie average in the run at 1,714, two sub-floor days (Sep 6 @ 1,050, Sep 11 @ 1,220), cluster now 11 days in 7 weeks. Steps not pulled. Zero lifts, 38-day layoff, one session in 8 weeks; three cardio sessions logged. Sleep short and fragmented: 6h33 avg, four of last five nights under 5h45. Disrupted week with two unscheduled care visits." },
+  { n: 29, label: "Sep 13\u201319",      end: "2026-09-18", wt: 223.1, chg: -2.4, prot: 107, hits: 3, logged: 6, cal: 2012, steps: null,  sleep: 416,  deficit: -566, train: "missed",   note: "Clean fasted-AM close Sep 18 @ 223.1, corroborated by two more AM reads (Sep 15 @ 224.8, Sep 17 @ 224.2) \u2014 first week since mid-August with enough readings to check itself. The \u22122.4 spans 14 days back to Sep 4. FIRST weekly protein average over 100g in the program record (106.8g, 3 of 6 days at target) and calories rose to 2,012 with ZERO sub-floor days, reversing the Week 28 shape. One logging gap: Sep 15 returned no nutrition records at all and is unrecoverable (averages are 6 logged days). Steps not pulled. Zero lifts \u2014 45-day layoff, and this was a HOME week with dumbbells available, so equipment is no longer the blocker. Five walking sessions / 385 min, the most consistent cardio block on record. Sleep split: within-night fragmentation resolved to 12 min awake/night, but four of seven nights terminated before 5:00 AM. Deficit model checked against the scale and passed \u2014 2.72 lbs predicted vs 2.40 delivered over 14 days, 12% optimistic. Span regression: 2,564 cumulative / 2,466 trailing. First body-comp reading (consumer BIA scale): 26.1% fat, 88.6 lbs muscle. Sep 20 dose HELD ahead of a Wed Sep 23 procedure." },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
@@ -327,7 +328,8 @@ const DAILY_WEIGHTS = [
   ["2026-07-23",232.1,"am"],["2026-07-30",232.1,"pm"],["2026-07-31",231.9,"am"],
   ["2026-08-01",231.2,"am"],["2026-08-04",230.8,"am"],["2026-08-07",229.0,"am"],
   ["2026-08-15",229.0,"pm"],["2026-08-20",226.1,"am"],
-  ["2026-09-04",225.5,"am"],
+  ["2026-09-04",225.5,"am"],["2026-09-15",224.8,"am"],["2026-09-17",224.2,"am"],
+  ["2026-09-18",223.1,"am"],
 ];
 
 const MILESTONES = [
@@ -341,6 +343,8 @@ const MILESTONES = [
   { date: "2026-08-20", label: "60 lbs lost" },
   { date: "2026-08-23", label: "Dose missed · 14-day gap" },
   { date: "2026-09-06", label: "7-day cadence restored" },
+  { date: "2026-09-18", label: "Inside 10 to goal" },
+  { date: "2026-09-20", label: "Dose held \u00b7 procedure" },
 ];
 
 /* ================= END OF DATA BLOCK ================= */
