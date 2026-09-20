@@ -207,7 +207,7 @@
     </div>
     <div class="card">
       <h2>Steps</h2>
-      <div class="desc">Weekly average steps/day</div>
+      <div class="desc">Weekly average steps/day · a missing week shows no bar, never a zero · partial weeks labeled in tooltip</div>
       <div class="chart-box" id="stepsChart"></div>
     </div>
     <div class="card">
@@ -271,7 +271,9 @@ const META = {
 
 // One row per tracked week. wt = closing weight (lbs); chg = week-over-week (lbs);
 // prot = avg g/day; hits = days protein target hit; logged = days logged;
-// cal = avg kcal/day; steps = avg/day; sleep = avg minutes asleep; deficit = avg kcal/day (calibrated, null before W17);
+// cal = avg kcal/day; steps = avg/day (null = not captured; NEVER average a missing day in as zero);
+// stepsN = optional day-count behind the steps average when fewer than 7 days have data (omit for full weeks);
+// sleep = avg minutes asleep; deficit = avg kcal/day (calibrated, null before W17);
 // train: "pre" | "complete" | "partial" | "missed"; note = short caveat shown in table/tooltips.
 const WEEKS = [
   { n: 6,  label: "Apr 6–12",       end: "2026-04-12", wt: 255.2, chg: -5.0, prot: 87,  hits: 3, logged: 5, cal: 1535, steps: 5375,  sleep: null, deficit: null, train: "pre",      note: "cal/protein are estimates; 2 days unlogged" },
@@ -291,13 +293,13 @@ const WEEKS = [
   { n: 20, label: "Jul 12–18",      end: "2026-07-18", wt: 232.1, chg: -4.6, prot: 107, hits: 6, logged: 7, cal: 2033, steps: 8380,  sleep: 436,  deficit: -637, train: "complete", note: "goal crossed; drop fluid-amplified (~1.3 lb real fat)" },
   { n: 21, label: "Jul 19–25",      end: "2026-07-25", wt: 232.1, chg: 0.0,  prot: 97,  hits: 4, logged: 7, cal: 1817, steps: 9566,  sleep: 386,  deficit: -853, train: "missed",   note: "NO clean close — only read was Jul 23 mid-week; travel, no scale. Not a flat week." },
   { n: 22, label: "Jul 26–Aug 1",   end: "2026-08-01", wt: 231.2, chg: -0.9, prot: 98,  hits: 3, logged: 7, cal: 1912, steps: 8641,  sleep: 419,  deficit: -758, train: "missed",   note: "clean fasted close Aug 1, but −0.9 spans 9 days off a placeholder prior; best sleep week on record" },
-  { n: 23, label: "Aug 2–8",        end: "2026-08-07", wt: 229.0, chg: -2.2, prot: 94,  hits: 3, logged: 7, cal: 1784, steps: null,  sleep: 439,  deficit: null, train: "partial",  note: "clean fasted closes both ends (6-day span); steps + deficit VOID — mid-week phone migration; first lift since Jul 18" },
+  { n: 23, label: "Aug 2–8",        end: "2026-08-07", wt: 229.0, chg: -2.2, prot: 94,  hits: 3, logged: 7, cal: 1784, steps: 10446, sleep: 439,  deficit: null, train: "partial",  note: "clean fasted closes both ends (6-day span); deficit VOID — mid-week phone migration; steps recovered Sep 20 from app history; first lift since Jul 18" },
   { n: 24, label: "Aug 9–15",       end: "2026-08-15", wt: 229.0, chg: 0.0,  prot: 85,  hits: 2, logged: 7, cal: 1750, steps: 6963,  sleep: 409,  deficit: -920, train: "missed",   note: "endpoints not comparable — Aug 15 is a 13:17 read, not fasted AM; likely 227-228 real. Zero lifts; steps from Google Health app (Health Connect under-reported all 7 days, see Data Notes)" },
   { n: 25, label: "Aug 16–22",      end: "2026-08-20", wt: 226.1, chg: -2.9, prot: 76,  hits: 1, logged: 7, cal: 2027, steps: 9136,  sleep: 385,  deficit: -673, train: "missed",   note: "clean fasted-AM close but only 1 reading, landed Thu not Sat; Aug 23 injection missed; 2 genuine surplus days in Napa (Aug 21-22); zero lifts, one in 7 weeks" },
-  { n: 26, label: "Aug 23–29",      end: "2026-08-29", wt: null,  chg: null, prot: 91,  hits: 3, logged: 7, cal: 2002, steps: 4675, sleep: 395, deficit: -698, train: "missed",   note: "NO CLOSE — zero weight records Aug 21–30; last valid read is Aug 20 @ 226.1. Steps = verified 5-day avg (Aug 25–29) via records mode; Aug 23–24 unrecoverable. Aug 23 dose missed; 7.5mg resumed Aug 30. Zero lifts — 24-day layoff." },
-  { n: 27, label: "Aug 30–Sep 5",   end: "2026-09-05", wt: 225.5, chg: -0.6, prot: 96,  hits: 3, logged: 6, cal: 1970, steps: null,  sleep: 404, deficit: -758, train: "missed",   note: "clean fasted-AM close Sep 4 @ 225.5, but the only reading in the window and the −0.6 spans 15 days back to Aug 20 (Week 26 had no close). Sep 2 nutrition missing entirely — averages are 6 logged days. Steps not pulled. Zero lifts — 31-day layoff. Span regression revised TDEE to 2,578 cumulative / 2,453 trailing." },
-  { n: 28, label: "Sep 6–12",       end: "2026-09-12", wt: null,  chg: null, prot: 99,  hits: 4, logged: 7, cal: 1714, steps: null,  sleep: 393,  deficit: -864, train: "missed",   note: "NO CLOSE. Zero weight records Sep 6–13; last valid read is Sep 4 @ 225.5, now 9 days stale and the only reading in 24 days. Best protein week on record at 98.6g avg, 4 of 7 at target, complete logging all 7 days. Lowest weekly calorie average in the run at 1,714, two sub-floor days (Sep 6 @ 1,050, Sep 11 @ 1,220), cluster now 11 days in 7 weeks. Steps not pulled. Zero lifts, 38-day layoff, one session in 8 weeks; three cardio sessions logged. Sleep short and fragmented: 6h33 avg, four of last five nights under 5h45. Disrupted week with two unscheduled care visits." },
-  { n: 29, label: "Sep 13\u201319",      end: "2026-09-18", wt: 223.1, chg: -2.4, prot: 107, hits: 3, logged: 6, cal: 2012, steps: null,  sleep: 416,  deficit: -566, train: "missed",   note: "Clean fasted-AM close Sep 18 @ 223.1, corroborated by two more AM reads (Sep 15 @ 224.8, Sep 17 @ 224.2) \u2014 first week since mid-August with enough readings to check itself. The \u22122.4 spans 14 days back to Sep 4. FIRST weekly protein average over 100g in the program record (106.8g, 3 of 6 days at target) and calories rose to 2,012 with ZERO sub-floor days, reversing the Week 28 shape. One logging gap: Sep 15 returned no nutrition records at all and is unrecoverable (averages are 6 logged days). Steps not pulled. Zero lifts \u2014 45-day layoff, and this was a HOME week with dumbbells available, so equipment is no longer the blocker. Five walking sessions / 385 min, the most consistent cardio block on record. Sleep split: within-night fragmentation resolved to 12 min awake/night, but four of seven nights terminated before 5:00 AM. Deficit model checked against the scale and passed \u2014 2.72 lbs predicted vs 2.40 delivered over 14 days, 12% optimistic. Span regression: 2,564 cumulative / 2,466 trailing. First body-comp reading (consumer BIA scale): 26.1% fat, 88.6 lbs muscle. Sep 20 dose HELD ahead of a Wed Sep 23 procedure." },
+  { n: 26, label: "Aug 23–29",      end: "2026-08-29", wt: null,  chg: null, prot: 91,  hits: 3, logged: 7, cal: 2002, steps: 5713, sleep: 395, deficit: -698, train: "missed",   note: "NO CLOSE — zero weight records Aug 21–30; last valid read is Aug 20 @ 226.1. Steps now a full 7-day avg (Aug 23–24 recovered Sep 20 from app history). Aug 23 dose missed; 7.5mg resumed Aug 30. Zero lifts — 24-day layoff." },
+  { n: 27, label: "Aug 30–Sep 5",   end: "2026-09-05", wt: 225.5, chg: -0.6, prot: 96,  hits: 3, logged: 6, cal: 1970, steps: 5445,  sleep: 404, deficit: -758, train: "missed",   note: "clean fasted-AM close Sep 4 @ 225.5, but the only reading in the window and the −0.6 spans 15 days back to Aug 20 (Week 26 had no close). Sep 2 nutrition missing entirely — averages are 6 logged days. Steps backfilled Sep 20 from app history. Zero lifts — 31-day layoff. Span regression revised TDEE to 2,578 cumulative / 2,453 trailing." },
+  { n: 28, label: "Sep 6–12",       end: "2026-09-12", wt: null,  chg: null, prot: 99,  hits: 4, logged: 7, cal: 1714, steps: 7170,  sleep: 393,  deficit: -864, train: "missed",   note: "NO CLOSE. Zero weight records Sep 6–13; last valid read is Sep 4 @ 225.5, now 9 days stale and the only reading in 24 days. Best protein week on record at 98.6g avg, 4 of 7 at target, complete logging all 7 days. Lowest weekly calorie average in the run at 1,714, two sub-floor days (Sep 6 @ 1,050, Sep 11 @ 1,220), cluster now 11 days in 7 weeks. Steps backfilled Sep 20 from app history (high variance: 1,913–14,973). Zero lifts, 38-day layoff, one session in 8 weeks; three cardio sessions logged. Sleep short and fragmented: 6h33 avg, four of last five nights under 5h45. Disrupted week with two unscheduled care visits." },
+  { n: 29, label: "Sep 13\u201319",      end: "2026-09-18", wt: 223.1, chg: -2.4, prot: 107, hits: 3, logged: 6, cal: 2012, steps: 9214,  sleep: 416,  deficit: -566, train: "missed",   note: "Clean fasted-AM close Sep 18 @ 223.1, corroborated by two more AM reads (Sep 15 @ 224.8, Sep 17 @ 224.2) \u2014 first week since mid-August with enough readings to check itself. The \u22122.4 spans 14 days back to Sep 4. FIRST weekly protein average over 100g in the program record (106.8g, 3 of 6 days at target) and calories rose to 2,012 with ZERO sub-floor days, reversing the Week 28 shape. One logging gap: Sep 15 returned no nutrition records at all and is unrecoverable (averages are 6 logged days). Steps backfilled Sep 20 from app history. Zero lifts \u2014 45-day layoff, and this was a HOME week with dumbbells available, so equipment is no longer the blocker. Five walking sessions / 385 min, the most consistent cardio block on record. Sleep split: within-night fragmentation resolved to 12 min awake/night, but four of seven nights terminated before 5:00 AM. Deficit model checked against the scale and passed \u2014 2.72 lbs predicted vs 2.40 delivered over 14 days, 12% optimistic. Span regression: 2,564 cumulative / 2,466 trailing. First body-comp reading (consumer BIA scale): 26.1% fat, 88.6 lbs muscle. Sep 20 dose HELD ahead of a Wed Sep 23 procedure." },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
@@ -390,7 +392,7 @@ function renderStatic() {
     { label: `To ${META.goal} goal`, value: `${fmt(toGoal,1)}<span class="unit"> lbs</span>`, delta: `≈ ${Math.round(toGoal/0.8)} wks at 0.8 lb/wk`, cls: "" },
     { label: "Protein avg", value: `${fmt(last.prot)}<span class="unit"> g/day</span>`, delta: `${last.hits}/${last.logged} days ≥100g`, cls: last.prot >= 100 ? "good" : "bad" },
     { label: "Steps avg", value: last.steps == null ? "—" : `${fmt(last.steps)}`,
-      delta: last.steps == null ? "no data this week" : (prev && prev.steps != null ? `${last.steps >= prev.steps ? "+" : ""}${fmt(last.steps - prev.steps)} vs prior wk` : ""), cls: "" },
+      delta: last.steps == null ? "no data this week" : (last.stepsN ? `${last.stepsN}-day avg` : (prev && prev.steps != null ? `${last.steps >= prev.steps ? "+" : ""}${fmt(last.steps - prev.steps)} vs prior wk` : "")), cls: "" },
     { label: "Sleep avg", value: `${sleepFmt(last.sleep)}`, delta: last.deficit ? `deficit ~${fmt(Math.abs(last.deficit))} kcal/day` : "", cls: "" },
   ];
   $("tiles").innerHTML = tiles.map(t =>
@@ -609,7 +611,7 @@ function drawTable() {
       <td>${fmt(w.prot)}g · ${w.hits}/${w.logged}</td>
       <td>${fmt(w.cal)}</td>
       <td>${w.deficit != null ? "−" + fmt(Math.abs(w.deficit)) : "—"}</td>
-      <td>${w.steps != null ? fmt(w.steps) : "—"}</td>
+      <td>${w.steps != null ? fmt(w.steps) + (w.stepsN ? `<div class="flag">${w.stepsN}-day avg</div>` : "") : "—"}</td>
       <td>${sleepFmt(w.sleep)}</td>
       <td>${trainTxt}</td>
     </tr>`;
@@ -640,7 +642,7 @@ function render() {
   });
   drawBars("stepsChart", {
     value: w => w.steps, zeroBase: true,
-    tip: (w, v) => `${fmt(v)} steps/day avg`,
+    tip: (w, v) => `${fmt(v)} steps/day avg${w.stepsN ? ` (${w.stepsN}-day avg — partial week)` : ""}`,
   });
   drawBars("sleepChart", {
     value: w => w.sleep, ref: 420, refLabel: "7h", zeroBase: false,
