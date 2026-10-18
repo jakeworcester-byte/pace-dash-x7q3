@@ -245,23 +245,22 @@
    ================================================================ */
 
 const META = {
-  updated: "2026-10-11",
+  updated: "2026-10-18",
   startWeight: 286.3,
   startDate: "2026-03-03",
   originalGoal: 236,
   goal: 215,
   dose: "7.5mg",
-  doseNote: "Injected Sun Oct 11 @ 7.5mg (confirmed), a 7-day interval from Oct 4, with no side effects. Dose timing for late October, around a scheduled procedure, is the care team's call and not yet on record.",
+  doseNote: "Injected Sun Oct 18 @ 7.5mg, a 7-day interval from Oct 11, with no side effects. Oct 25 is the last planned dose before a scheduled procedure; the Nov 1 dose will be skipped, and restart timing comes from the care team.",
   injectionDay: "Sunday",
-  troughWindow: "Oct 16 to Oct 18 (days 5 to 7 after the Oct 11 dose). The next dose lands Oct 18.",
-  statusLine: "<strong>A fed week with no scale read.</strong> No weigh-in landed between Oct 4 and Oct 10, so the last valid read is still <strong>222.30 lbs</strong> on Sep 29 (64.0 down, 7.3 to go) and it is now stale. Protein averaged <strong>101.3g/day</strong> and calories <strong>2,076</strong> across six logged days, though one 167g day carries the protein average; the other five averaged 88.2g. The injection day reached <strong>103g</strong>, the first home injection day over 100g. Sleep held at <strong>7h07</strong>. Lifting is still at zero since Aug 6, and the pause is over.",
-  focusDesc: "From the Week 32 summary (Oct 4 to Oct 10)",
+  troughWindow: "Oct 23 to Oct 25 (days 5 to 7 after the Oct 18 dose). The next dose lands Oct 25.",
+  statusLine: "<strong>New low, first reading under 220.</strong> A fasted-AM read of <strong>219.50 lbs</strong> on Oct 15 puts the total at <strong>66.8 down, 4.5 to go</strong>, and the 16-day drop from Sep 29 beat the model by 9%. Protein cleared 100g on <strong>5 of 6</strong> complete days and averaged <strong>109g</strong>, with no single day carrying it; breakfast every day is what changed. The injection day hit <strong>123g</strong>, the best on record. Sleep held at <strong>7h14</strong>. Lifting is still at zero since Aug 6.",
+  focusDesc: "From the Week 33 summary (Oct 11 to Oct 17)",
   focus: [
-    "<strong>Get a fasted-AM weigh-in Monday, then one or two more.</strong> The last read is Sep 29. Nothing about the rate can be assessed until there is a new endpoint.",
-    "<strong>Lift this week.</strong> The pause is over and there are three weeks to Nov 1, room for about six sessions. Start with Day A at Aug 6 loads (Goblet 45 &middot; Bench 70 &middot; RDL 80 &middot; BOR 70 &middot; Plank 2&times;40s), twice a week, no progression off the layoff.",
-    "<strong>Protect protein on travel and event days.</strong> Five of six logged days were at 90g or better. The miss was the travel day home (66g, 1,330 cal). Trough runs Oct 16 to Oct 18.",
-    "<strong>Keep feeding the run-up.</strong> Arriving in November fed, at 100g protein, with lifting banked matters more than the weekly rate.",
-    "<strong>Get the late-October dose plan in writing.</strong> Whether the Oct 25 and Nov 1 doses are taken or held, and when to resume, is the care team's instruction to give.",
+    "<strong>Lift four times before Nov 1.</strong> Day A and Day B at Aug 6 loads (Goblet 45 &middot; Bench 70 &middot; RDL 80 &middot; BOR 70; Lunge 45 &middot; OHP 70 &middot; SDL 90 &middot; CSR 80), RPE 6, no progression off a 10-week layoff. A four-week lifting break follows.",
+    "<strong>Keep the breakfast habit.</strong> A 25 to 30g breakfast every day is what moved protein from 2 of 6 days at target to 5 of 6. Trough runs Oct 23 to Oct 25.",
+    "<strong>Fix the desk days.</strong> Three days under 4,000 steps sat between three walking days over 9,000. A short walk on desk days closes most of that gap.",
+    "<strong>Bank one or two more fasted-AM weigh-ins before November.</strong> A clean close right before the break gives the recovery period a solid anchor.",
   ],
 };
 
@@ -299,6 +298,7 @@ const WEEKS = [
   { n: 30, label: "Sep 20–26",      end: "2026-09-26", wt: null,  chg: null, prot: 79,  hits: 1, logged: 7, cal: 1719, steps: 7927,  sleep: 396,  deficit: -845, train: "missed",   note: "NO CLOSE. Zero weight records Sep 19 to Sep 27; last valid read is Sep 18 @ 223.1. Procedure week, home all week. Sep 20 dose held; 7.5mg restarted Thu Sep 24 (11-day interval), no side effects. Protein fell to 79.4g avg (1 of 7 at target), lowest since Week 25, but the shortfall sits entirely in the four pre-restart days (65.6g avg); the three days after the restart averaged 97.7g. Calories fell with it to 1,719, the lean-mass-risk shape, with zero sub-floor days. Restart day hit 1,740 cal / 92g, the best injection-day protein on record. Deepest weekly deficit in several weeks (-845/day), driven by lower intake. Zero lifts, 52-day layoff, now paused post-procedure through about Oct 7. Cardio held: 380 min across 8 sessions on 6 of 7 days. Sleep 6h36 avg; fragmentation back to 33 min/night, but early termination improved to 1 of 7 nights. Span regression not updated (no endpoint); baseline TDEE stays 2,564." },
   { n: 31, label: "Sep 27\u2013Oct 3",    end: "2026-09-29", wt: 222.3, chg: -0.8, prot: 87,  hits: 1, logged: 7, cal: 1914, steps: 8381,  sleep: 434,  deficit: -650, train: "missed",   note: "New low 222.3 on a confirmed fasted-AM read Sep 29 (Tue), the only reading in the window, so a mid-week close; the -0.8 spans 11 days back to Sep 18. 64.0 lbs lost. Protein recovered to 87.2g avg (1 of 7 at target, two more within 3g) with calories rising alongside to 1,914 and zero sub-floor days; breakfast logged 6 of 7 days. Sep 30 steps under-counted (two walking sessions not captured), so the 8,381 avg is low; 464 cardio min across 8 sessions. Sleep 7h14 avg, best in several weeks, 25 min awake/night, early termination 2 of 7. Zero lifts, 59-day layoff, paused post-procedure through about Oct 7. Deficit model ran 64% optimistic vs the scale over 11 days (2.25 predicted, 0.80 delivered). Span regression: 2,508 cumulative / 2,399 trailing; baseline TDEE now 2,508. Dose back on the Sunday cadence Oct 4 @ 7.5mg." },
   { n: 32, label: "Oct 4\u201310",       end: "2026-10-10", wt: null,  chg: null, prot: 101, hits: 2, logged: 6, cal: 2076, steps: null,  sleep: 427,  deficit: -432, train: "missed",   note: "NO CLOSE. Zero weight records Sep 30 to Oct 11; last valid read is Sep 29 @ 222.3, now 12 days stale. Travel Mon to Wed. Injected Oct 4 and Oct 11 @ 7.5mg on the Sunday cadence, no side effects. Averages are 6 logged days: Oct 8 dinner was not logged and is unrecoverable. Protein 101.3g avg (2 of 6 at target), but one 167g day carries it; the other five averaged 88.2g. Oct 4 reached 103g, the first home injection day over 100g. Calories 2,076 avg with one sub-floor day (Oct 7 @ 1,330, travel) and one surplus day (Oct 10 @ 3,530). One Oct 10 food entry (1,600 cal) was in the Google Health app but missing from Health Connect; corrected from the app, other days verified. Steps not reportable: only Oct 4 (16,056) was retrievable. 252 walking min across 7 sessions on 4 of 7 days. Sleep 7h07 avg, 15 min awake/night, early termination 1 of 7. Zero lifts, 66-day layoff; the lifting pause ended about Oct 7. Span regression not updated (no endpoint); baseline TDEE stays 2,508." },
+  { n: 33, label: "Oct 11\u201317",      end: "2026-10-15", wt: 219.5, chg: -2.8, prot: 109, hits: 5, logged: 6, cal: 2079, steps: 6962,  sleep: 434,  deficit: -429, train: "missed",   note: "New low 219.5 on a confirmed fasted-AM read Oct 15 (Thu), the only reading in the window; the -2.8 spans 16 days back to Sep 29. First reading under 220; 66.8 lbs lost, 4.5 to goal. Protein 109.4g avg with 5 of 6 complete days at target, the best hit rate in months and not carried by one day; breakfast logged all 7 days. Injection day Oct 11 hit 2,220 cal / 123g, the best on record. Averages are 6 logged days: Oct 15 dinner eaten but not logged. Zero confirmed sub-floor days. Steps 6,962 avg, all 7 days: three walking days 9,000 to 12,600, three desk days under 4,000. 222 exercise min across 4 sessions, including a 60-min treadmill run. Sleep 7h14 avg, 11 min awake/night, early termination 2 of 7. Zero lifts, 73-day layoff. Deficit model checked against the scale and passed: 2.56 predicted vs 2.80 delivered over 16 days, 9% conservative. Span regression: 2,515 cumulative / 2,434 trailing; baseline TDEE now 2,515. Injected Oct 18 @ 7.5mg." },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
@@ -330,7 +330,7 @@ const DAILY_WEIGHTS = [
   ["2026-08-01",231.2,"am"],["2026-08-04",230.8,"am"],["2026-08-07",229.0,"am"],
   ["2026-08-15",229.0,"pm"],["2026-08-20",226.1,"am"],
   ["2026-09-04",225.5,"am"],["2026-09-15",224.8,"am"],["2026-09-17",224.2,"am"],
-  ["2026-09-18",223.1,"am"],["2026-09-29",222.3,"am"],
+  ["2026-09-18",223.1,"am"],["2026-09-29",222.3,"am"],["2026-10-15",219.5,"am"],
 ];
 
 const MILESTONES = [
@@ -348,6 +348,7 @@ const MILESTONES = [
   { date: "2026-09-20", label: "Dose held \u00b7 procedure" },
   { date: "2026-09-24", label: "Dose restarted \u00b7 7.5mg" },
   { date: "2026-09-29", label: "64 lbs lost" },
+  { date: "2026-10-15", label: "Under 220" },
 ];
 
 /* ================= END OF DATA BLOCK ================= */
