@@ -149,6 +149,38 @@
   .neg { color: var(--good-text); font-weight: 600; }
   .pos { color: var(--red); font-weight: 600; }
   .flag { color: var(--muted); font-size: 0.68rem; }
+
+  /* weekly log notes: own row under the numbers, long ones collapsed to a one-line preview */
+  tr.has-note td { border-bottom: none; padding-bottom: 2px; }
+  td.note-cell { text-align: left; white-space: normal; font-weight: 400; color: var(--muted); padding: 0 8px 8px; }
+  /* width 0 + min-width 100% keeps note length out of the table's column sizing */
+  .note-body { width: 0; min-width: 100%; font-size: 0.74rem; line-height: 1.45; }
+  div.note-body { padding-left: 16px; box-sizing: border-box; }
+  .note-body summary { display: flex; gap: 6px; cursor: pointer; list-style: none; border-radius: 3px; }
+  .note-body summary::-webkit-details-marker { display: none; }
+  .note-body summary::before { content: "▸"; flex: none; align-self: flex-start; width: 10px; text-align: center; transition: transform .12s; }
+  .note-body[open] > summary::before { transform: rotate(90deg); }
+  .note-body summary:hover { color: var(--ink-2); }
+  .note-body summary:focus-visible { outline: 2px solid var(--blue); outline-offset: 2px; }
+  .note-body summary span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .note-body[open] summary span { white-space: normal; color: var(--ink-2); max-width: 100ch; }
+
+  /* phone: each week becomes a stacked block instead of a nine-column row */
+  @media (max-width: 760px) {
+    #weekTable, #weekTable tbody { display: block; }
+    #weekTable thead { display: none; }
+    #weekTable tbody { padding: 12px 0; border-bottom: 1px solid var(--baseline); }
+    #weekTable tbody:last-child { border-bottom: none; }
+    #weekTable tr.nums { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px 8px; }
+    #weekTable tr.nums td { display: block; grid-column: span 2; padding: 0; border: none; text-align: left; white-space: normal; }
+    #weekTable tr.nums td::before { content: attr(data-label); display: block; color: var(--muted); font-size: 0.68rem; font-weight: 400; }
+    #weekTable tr.nums td.wk-name { grid-column: span 4; align-self: end; font-size: 0.86rem; }
+    #weekTable tr.nums td.wk-name::before { content: none; }
+    #weekTable tr.nums td.wk-top { grid-column: span 1; text-align: right; font-size: 0.86rem; color: var(--ink-1); }
+    #weekTable tr.note-row { display: block; margin-top: 10px; }
+    #weekTable td.note-cell { display: block; padding: 0; border: none; }
+    .note-body summary { padding: 4px 0; }
+  }
   footer { margin-top: 26px; font-size: 0.72rem; color: var(--muted); text-align: center; }
 </style>
 </head>
@@ -653,25 +685,39 @@ function drawTraining() {
 }
 
 // ---------- table ----------
+const NOTE_PREVIEW_MIN = 120;   // notes at or under this length show in full, no expander
+const openNotes = new Set();    // week numbers expanded by the viewer; survives re-render
+function noteRow(w) {
+  if (!w.note) return "";
+  const body = w.note.length <= NOTE_PREVIEW_MIN
+    ? `<div class="note-body">${w.note}</div>`
+    : `<details class="note-body" data-n="${w.n}"${openNotes.has(w.n) ? " open" : ""}><summary><span>${w.note}</span></summary></details>`;
+  return `<tr class="note-row"><td class="note-cell" colspan="9">${body}</td></tr>`;
+}
 function drawTable() {
   const t = $("weekTable");
   const rows = [...WEEKS].reverse().map(w => {
     const chgCls = w.chg == null ? "" : w.chg < 0 ? "neg" : w.chg > 0 ? "pos" : "";
     const trainTxt = { pre: "—", complete: "✓ A+B", partial: "◐ one", missed: "✕ none" }[w.train];
-    return `<tr>
-      <td>W${w.n} · ${w.label}${w.note ? `<div class="flag">${w.note}</div>` : ""}</td>
-      <td>${fmt(w.wt,1)}</td>
-      <td class="${chgCls}">${w.chg == null ? "—" : (w.chg > 0 ? "+" : "") + fmt(w.chg,1)}</td>
-      <td>${fmt(w.prot)}g · ${w.hits}/${w.logged}</td>
-      <td>${fmt(w.cal)}</td>
-      <td>${w.deficit != null ? "−" + fmt(Math.abs(w.deficit)) : "—"}</td>
-      <td>${w.steps != null ? fmt(w.steps) + (w.stepsN ? `<div class="flag">${w.stepsN}-day avg</div>` : "") : "—"}</td>
-      <td>${sleepFmt(w.sleep)}</td>
-      <td>${trainTxt}</td>
-    </tr>`;
+    return `<tbody><tr class="nums${w.note ? " has-note" : ""}">
+      <td class="wk-name">W${w.n} · ${w.label}</td>
+      <td class="wk-top" data-label="Close">${fmt(w.wt,1)}</td>
+      <td class="wk-top ${chgCls}" data-label="Δ wk">${w.chg == null ? "—" : (w.chg > 0 ? "+" : "") + fmt(w.chg,1)}</td>
+      <td data-label="Protein">${fmt(w.prot)}g · ${w.hits}/${w.logged}</td>
+      <td data-label="Cal/day">${fmt(w.cal)}</td>
+      <td data-label="Deficit">${w.deficit != null ? "−" + fmt(Math.abs(w.deficit)) : "—"}</td>
+      <td data-label="Steps">${w.steps != null ? fmt(w.steps) + (w.stepsN ? `<div class="flag">${w.stepsN}-day avg</div>` : "") : "—"}</td>
+      <td data-label="Sleep">${sleepFmt(w.sleep)}</td>
+      <td data-label="Training">${trainTxt}</td>
+    </tr>${noteRow(w)}</tbody>`;
   }).join("");
-  t.innerHTML = `<thead><tr><th>Week</th><th>Close (lbs)</th><th>Δ wk</th><th>Protein</th><th>Cal/day</th><th>Deficit</th><th>Steps</th><th>Sleep</th><th>Training</th></tr></thead><tbody>${rows}</tbody>`;
+  t.innerHTML = `<thead><tr><th>Week</th><th>Close (lbs)</th><th>Δ wk</th><th>Protein</th><th>Cal/day</th><th>Deficit</th><th>Steps</th><th>Sleep</th><th>Training</th></tr></thead>${rows}`;
 }
+// toggle doesn't bubble, so listen in the capture phase
+$("weekTable").addEventListener("toggle", e => {
+  const n = +e.target.dataset.n;
+  if (e.target.open) openNotes.add(n); else openNotes.delete(n);
+}, true);
 
 // ---------- render all ----------
 function render() {
