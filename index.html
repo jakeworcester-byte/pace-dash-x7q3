@@ -238,7 +238,7 @@
     </div>
     <div class="card">
       <h2>Calibrated daily deficit</h2>
-      <div class="desc">Modeled avg deficit (kcal/day) · tracked since Week 17 · baseline TDEE revised over time, currently 2,508</div>
+      <div class="desc">Modeled avg deficit (kcal/day) · tracked since Week 17 · baseline TDEE revised over time, currently 2,494</div>
       <div class="chart-box" id="deficitChart"></div>
     </div>
     <div class="card">
@@ -281,23 +281,23 @@
    ================================================================ */
 
 const META = {
-  updated: "2026-11-08",
+  updated: "2026-11-15",
   startWeight: 286.3,
   startDate: "2026-03-03",
   originalGoal: 236,
   goal: 215,
   dose: "7.5mg",
-  doseNote: "Last injected Sun Oct 25 @ 7.5mg. The Nov 1 and Nov 8 doses were held during recovery from a scheduled procedure; the restart waits on recovery, Nov 15 at the earliest, with the restart dose to be confirmed after the gap.",
+  doseNote: "7.5mg; restarted Sun Nov 15 after a 3-week hold (Nov 1 and Nov 8 held during recovery). Prior dose Sun Oct 25 @ 7.5mg.",
   injectionDay: "Sunday",
-  troughWindow: "None this week. Zepbound on hold.",
-  statusLine: "<strong>A recovery week.</strong> Tracking was minimal: no weigh-in and almost no food logged, so weight and deficit are not interpreted. The last valid read stands at <strong>218.20 lbs</strong> (Oct 29): <strong>68.1 down, 3.2 to go</strong>. Walking is coming back: daily steps ran about <strong>710, 2,480, 1,300, then 4,700</strong>, capped by a <strong>36-min</strong> walk on Nov 7. Sleep averaged <strong>7h01</strong> over 5 tracked nights. Protein is the gap, at an estimated <strong>50 to 80g/day</strong>.",
-  focusDesc: "From the Week 36 summary (Nov 1 to Nov 7)",
+  troughWindow: "Fri Nov 20 to Sun Nov 22",
+  statusLine: "<strong>Recovery is running ahead of schedule.</strong> The best protein week in the program record: <strong>114.2g/day</strong>, <strong>5 of 7</strong> days at target, carried by a breakfast shake on six of seven mornings. Calories averaged <strong>2,369</strong>, near maintenance by design. Steps averaged <strong>7,783/day</strong> with walks up to <strong>71 min</strong>. Sleep averaged <strong>6h30</strong>, with within-night waking back to normal but <strong>4 of 7</strong> nights ending before 5 AM. No weigh-in; the last valid read stands at <strong>218.20 lbs</strong> (Oct 29): <strong>68.1 down, 3.2 to go</strong>.",
+  focusDesc: "From the Week 37 summary (Nov 8 to Nov 14)",
   focus: [
-    "<strong>Close the protein gap.</strong> One daily shake covers most of the 20 to 50g shortfall; yogurt, eggs, and cottage cheese cover the rest.",
-    "<strong>Fluids and fiber.</strong> Add protein alongside fruit rather than replacing meals with it.",
-    "<strong>Walk to fatigue, not a target.</strong> Up-and-down days are the expected shape.",
-    "<strong>Zepbound restart when recovery allows.</strong> Nov 15 at the earliest; confirm the dose after a three-week gap.",
-    "<strong>No scale conclusions yet.</strong> Weigh-ins count again once readings settle.",
+    "<strong>Manage the Zepbound re-entry.</strong> First dose after three weeks off: keep fluids and fiber up, and make the shake non-negotiable on dose day.",
+    "<strong>Resume fasted-AM weigh-ins.</strong> The first readings set a new baseline, not a delta against 218.2; expect them to run a few pounds high.",
+    "<strong>Hold the protein habit.</strong> Keep the breakfast shake, and put 25g+ at lunch, where both misses came from.",
+    "<strong>Watch the early wake-ups.</strong> 4 of 7 nights ended before 5 AM; see whether it persists now that the conference week is over.",
+    "<strong>Walk to fatigue, not a target.</strong> Lifting resumes at clearance, about Nov 30.",
   ],
 };
 
@@ -339,6 +339,7 @@ const WEEKS = [
   { n: 34, label: "Oct 18\u201324",      end: "2026-10-20", wt: 218.2, chg: -1.3, prot: 100, hits: 3, logged: 7, cal: 1780, steps: 8718,  sleep: 452,  deficit: -735, train: "missed",   note: "New low 218.2 on a morning read Oct 20 (Tue), the only reading in the window; the -1.3 spans 5 days back to Oct 15. 68.1 lbs lost, 3.2 to goal. All 7 days complete. Protein 99.8g avg, 3 of 7 at target; one 152g day carries it, the other six averaged 91g, with dinner the weak meal. Injection day Oct 18 was genuinely light at 1,190 cal / 63g, ending a five-week run at 90g or better, and Oct 19 (1,390) made two sub-floor days in a row. Oct 22 breakfast skipped. Steps 8,718 avg, all 7 days; 316 walking min across 6 sessions on 5 days, the best walking week in months. Sleep 7h32 avg, 17 min awake/night, early termination 1 of 7. Zero lifts, 80-day layoff. Deficit -735/day calibrated. Model checked against the scale over 21 days: 3.48 predicted vs 4.10 delivered, 15% conservative. Span regression: 2,528 cumulative / 2,457 trailing; baseline TDEE now 2,528. Injected Oct 25 @ 7.5mg." },
   { n: 35, label: "Oct 25\u201331",      end: "2026-10-29", wt: 218.2, chg: 0.0,  prot: 109, hits: 3, logged: 7, cal: 2229, steps: 11726, sleep: 418,  deficit: -299, train: "missed",   note: "Flat at 218.2 on a confirmed fasted-AM read Oct 29 (Thu), the only reading in the window; 0.0 over 9 days back to Oct 20, the expected cost of a deliberate eat-near-maintenance week. 68.1 lbs lost, 3.2 to goal. All 7 days complete. Protein 108.9g avg, 3 of 7 at target, no day under 81g; breakfast logged all 7 days. Calories 2,229 avg with zero sub-floor days. Injection day Oct 25 held at 1,610 cal / 93g, breaking the Oct 18 dip. Oct 31 lunch and dinner synced late and are included. Steps 11,726 avg, all 7 days, the highest in recent weeks; 480 walking min across 16 sessions on 6 days, the best walking week on record. Sleep 6h58 avg, 24 min awake/night, early termination 0 of 7. Zero lifts, 87-day layoff; lifting restarts after clearance. Deficit -299/day calibrated. Model checked against the scale over 30 days: 4.72 predicted vs 4.10 delivered, 15% optimistic. Span regression: 2,494 cumulative / 2,418 trailing; baseline TDEE now 2,494. Nov 1 dose skipped ahead of a scheduled procedure." },
   { n: 36, label: "Nov 1\u20137",       end: "2026-11-07", wt: null,  chg: null, prot: null, hits: 0, logged: 0, cal: null, steps: null,  sleep: 421,  deficit: null, train: "missed",   note: "NO CLOSE. Recovery week following a scheduled procedure. No weight records Oct 30 to Nov 8; the last valid read is Oct 29 @ 218.2 (68.1 lbs lost, 3.2 to goal), and readings will not be interpreted until they settle. Nutrition essentially unlogged (one partial day); eating reported near normal with protein estimated at 50 to 80g/day, short of target. Steps not averaged: the tracker was not worn several days. Recovery days ran about 710, 2,480, 1,300, then 4,700 steps, with a 36-min walk on Nov 7. 124 walking min across 3 sessions, including 74 min on Nov 1. Sleep 7h01 avg over 5 tracked nights, 40 min awake/night. Zero lifts, 94-day layoff; lifting resumes at clearance, about Nov 30. Span regression not updated; baseline TDEE holds at 2,494. Nov 8 Zepbound dose held." },
+  { n: 37, label: "Nov 8–14",      end: "2026-11-14", wt: null,  chg: null, prot: 114, hits: 5, logged: 7, cal: 2369, steps: 7783,  sleep: 390,  deficit: null, train: "missed",   note: "NO CLOSE. Recovery week 2. No weight records Oct 30 to Nov 15; the last valid read is Oct 29 @ 218.2 (68.1 lbs lost, 3.2 to goal). Weigh-ins resume next week as a new baseline, not a delta. All 7 days logged (Nov 10 to 14 entered retroactively). Protein 114.2g avg, 5 of 7 at target, the best protein week in the program record; a breakfast shake on six of seven mornings carried it. Calories 2,369 avg, near maintenance by design, zero sub-floor days. Steps 7,783 avg, all 7 days; 325 walking min across 11 sessions, with walks of 68 and 71 min. Sleep 6h30 avg, 25 min awake/night, early termination 4 of 7. Zero lifts, 101-day layoff; lifting resumes at clearance, about Nov 30. Deficit not a target in recovery (about -125/day, effectively maintenance). Baseline TDEE holds at 2,494. Zepbound restarted Nov 15 @ 7.5mg." },
 ];
 
 // [date, lbs, "am"|"pm"] — am = fasted/morning read unless noted
